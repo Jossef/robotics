@@ -12,8 +12,6 @@ Manager::Manager(Robot* robot, Plan* plan)
 	_robot = robot;
 	_plan = plan;
 	_curr = plan->startBehavior();
-	// TODO Auto-generated constructor stub
-
 }
 void Manager::run()
 {
@@ -36,5 +34,4 @@ void Manager::run()
 }
 
 Manager::~Manager() {
-	// TODO Auto-generated destructor stub
 }

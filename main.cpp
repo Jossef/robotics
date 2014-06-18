@@ -17,10 +17,25 @@
 #include "Plans/PlnObstacleAvoid.h"
 
 #include "Map.h"
+#include "MathHelper.h"
+#include "Point.h"
 
 using namespace std;
 
+
 int main(int argc, char** argv)
+{
+	vector<Point> intermediatePoints;
+	MathHelper::GetIntermediatePoints(Point(-5,20), Point(1,5), 0.5, intermediatePoints);
+
+	vector<Point >::const_iterator iter = intermediatePoints.begin();
+	for(;iter!=intermediatePoints.end();iter++)
+	{
+		cout << (*iter).first << " , " << (*iter).second << endl;
+	}
+}
+
+int main4(int argc, char** argv)
 {
 	Robot robot("localhost", 6665);
 	PlnObstacleAvoid pln(&robot);
@@ -36,23 +51,23 @@ using namespace PlayerCc;
 #define LASER_MESURING_AREA 120
 #define LASER_MAXIMUM_RANGE 2
 
-float indexToDegree(int index) {
+double indexToDegree(int index) {
 	return (index * LASER_RESOLUTION) - LASER_MESURING_AREA;
 }
 
-int degreeToIndex(float degree) {
+int degreeToIndex(double degree) {
 	return (degree + LASER_MESURING_AREA) / LASER_RESOLUTION;
 }
 
-float degreeToRadian(float degree) {
+double degreeToRadian(double degree) {
 	return degree * M_PI / 180.0;
 }
 
-float radianToDegree(float radian) {
+double radianToDegree(double radian) {
 	return radian * 180.0 / M_PI;
 }
 
-int main2(int argc, char** argv) {
+int main3(int argc, char** argv) {
 	PlayerClient pc("localhost", 6665);
 	Position2dProxy pp(&pc, 0);
 	SonarProxy sp(&pc, 0);
@@ -62,7 +77,7 @@ int main2(int argc, char** argv) {
 	pp.SetMotorEnable(true);
 
 	Map worldMap(18, 40, 1);
-	//pp.SetOdometry(0,0,0);
+	pp.SetOdometry(0,0,0);
 
 	for (int i = 0; i < 8; i++) {
 		pc.Read();
@@ -78,27 +93,23 @@ int main2(int argc, char** argv) {
 
 			for (int i = 0; i < 666; i++) {
 
-				float distance = lp[i];
+				double distance = lp[i];
 				if (distance >= LASER_MAXIMUM_RANGE) {
 					continue;
 				}
 
-				float angle_in_degree = indexToDegree(i);
-				float angle_in_radian = degreeToRadian(angle_in_degree);
+				double angle_in_degree = indexToDegree(i);
+				double angle_in_radian = degreeToRadian(angle_in_degree);
 
-				float robotX = pp.GetXPos();
-				float robotY = pp.GetYPos();
+				double robotX = pp.GetXPos();
+				double robotY = pp.GetYPos();
 
-				float object_angle = angle_in_radian + pp.GetYaw();
+				double object_angle = angle_in_radian + pp.GetYaw();
 
-				float obstacleX = distance * cos(object_angle) + robotX;
-				float obstacleY = distance * sin(object_angle) + robotY;
+				double obstacleX = distance * cos(object_angle) + robotX;
+				double obstacleY = distance * sin(object_angle) + robotY;
 
-				//obstacleX = robotX;
-				//obstacleY=robotY;
 				ostringstream key;
-
-				// TODO ask yoda
 
 				int robotMapCol = worldMap.convertXToColumn(robotX);
 				int robotMapRow = worldMap.convertYToRow(robotY);
