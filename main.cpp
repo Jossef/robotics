@@ -23,7 +23,7 @@
 using namespace std;
 
 
-int main(int argc, char** argv)
+int main23(int argc, char** argv)
 {
 	vector<Point> intermediatePoints;
 	MathHelper::GetIntermediatePoints(Point(-5,20), Point(1,5), 0.5, intermediatePoints);
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
 	}
 }
 
-int main4(int argc, char** argv)
+int main(int argc, char** argv)
 {
 	Robot robot("localhost", 6665);
 	PlnObstacleAvoid pln(&robot);

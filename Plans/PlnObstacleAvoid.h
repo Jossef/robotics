@@ -9,9 +9,6 @@
 #define PLNOBSTACLEAVOID_H_
 
 #include "Plan.h"
-#include "../Behaviors/GoForward.h"
-#include "../Behaviors/GoRight.h"
-#include "../Behaviors/GoLeft.h"
 class PlnObstacleAvoid: public Plan
 {
 public:

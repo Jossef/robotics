@@ -6,6 +6,12 @@
  */
 
 #include "PlnObstacleAvoid.h"
+
+#include "../Behaviors/GoForward.h"
+#include "../Behaviors/GoRight.h"
+#include "../Behaviors/GoLeft.h"
+#include "../Behaviors/GoBackward.h"
+
 PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot):Plan(robot) {
 	// TODO Auto-generated constructor stub
 
@@ -13,18 +19,21 @@ PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot):Plan(robot) {
 	Behavior* goForwardBehavior = new GoForward(_robot);
 	Behavior* goRightBehavior = new GoRight(_robot);
 	Behavior* goLeftBehavior = new GoLeft(_robot);
+	Behavior* goBackBehavior = new GoBackward(_robot);
 
 	_behaviors.push_back(goForwardBehavior);
 	_behaviors.push_back(goRightBehavior);
 	_behaviors.push_back(goLeftBehavior);
+	_behaviors.push_back(goBackBehavior);
 
 	//Connecting behaviors
 	goForwardBehavior->addNextBehavior(goRightBehavior);
 	goForwardBehavior->addNextBehavior(goLeftBehavior);
 
 	goRightBehavior->addNextBehavior(goForwardBehavior);
-	goRightBehavior->addNextBehavior(goForwardBehavior);
-	goLeftBehavior->addNextBehavior(goRightBehavior);
+	goRightBehavior->addNextBehavior(goBackBehavior);
+	goLeftBehavior->addNextBehavior(goForwardBehavior);
+	goLeftBehavior->addNextBehavior(goBackBehavior);
 
 	_startBehavior = goForwardBehavior;
 }
