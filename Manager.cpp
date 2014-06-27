@@ -11,24 +11,36 @@ Manager::Manager(Robot* robot, Plan* plan)
 {
 	_robot = robot;
 	_plan = plan;
-	_curr = plan->startBehavior();
+	_currentBehavior = plan->startBehavior();
 }
 void Manager::run()
 {
-	_robot->read();
-	if(_curr->startCondition() == false)
+	_robot->refresh();
+
+	if(_currentBehavior->startCondition() == false)
+	{
 		return;
-	_curr->action();
+	}
+
+	_currentBehavior->action();
+
 	while(true)
 	{
-		_robot->read();
-		if(_curr->stopCondition())
+		_robot->refresh();
+
+		if(_currentBehavior->stopCondition())
 		{
-			_curr = _curr->getNextBehavior();
-			if(!_curr)
+			_currentBehavior = _currentBehavior->getNextBehavior();
+
+			// If there are no more behaviors
+			if(!_currentBehavior_currentBehavior)
+			{
 				break;
+			}
 		}
-		_curr->action();
+
+
+		_currentBehavior->action();
 	}
 
 }

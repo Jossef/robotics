@@ -16,6 +16,7 @@ class Behavior {
 	vector<Behavior*> _nextBehaviors;
 protected:
 	Robot* _robot;
+
 public:
 	Behavior(Robot* robot);
 	virtual bool startCondition() = 0;

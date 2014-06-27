@@ -7,6 +7,7 @@
 
 
 #include "GoRight.h"
+#include "../Configuration.h"
 
 GoRight::GoRight(Robot *robot):Behavior(robot)
 {
@@ -15,9 +16,8 @@ GoRight::GoRight(Robot *robot):Behavior(robot)
 
 bool GoRight::startCondition()
 {
-	if((_robot->getLaserDistance(333) > 0.8)&& (_robot->getLaserDistance(111) > 0.8))
-			return true;
-		return false;
+	bool startCondition = ((_robot->getLaserDistance(333) > 0.8)&& (_robot->getLaserDistance(111) > 0.8));
+	return startCondition;
 }
 
 void GoRight::action()

@@ -7,19 +7,45 @@
 
 #ifndef ROBOT_H_
 #define ROBOT_H_
+
+#include "Point.h"
+#include "Laser.h"
 #include <libplayerc++/playerc++.h>
+#include <vector>
+
+using namespace std;
 using namespace PlayerCc;
 
+class Laser;
+
 class Robot {
-	PlayerClient* _pc;
-	Position2dProxy* _pp;
-	LaserProxy* _lp;
+	PlayerClient* _playerClient;
+	Position2dProxy* _positionProxy;
+	LaserProxy* _laserProxy;
+	Laser* _laser;
+
 public:
 	Robot(char* ip, int port);
-	void read();
+
+	double getX();
+	double getY();
+	double getYaw();
+
+	void getObstacles(vector<Point>& obstacles);
+
+	bool canRotate();
+	bool canMoveForward();
+
+	void refresh();
 	void setSpeed(float speed, float angularSpeed);
-	float getLaserDistance(int index);
-	virtual ~Robot();
+
+	virtual ~Robot()
+	{
+		delete _laser;
+		delete _positionProxy;
+		delete _laserProxy;
+		delete _playerClient;
+	}
 };
 
 #endif /* ROBOT_H_ */

@@ -18,22 +18,22 @@ PlnObstacleAvoid::PlnObstacleAvoid(Robot* robot):Plan(robot) {
 	//Creating behaviors
 	Behavior* goForwardBehavior = new GoForward(_robot);
 	Behavior* goRightBehavior = new GoRight(_robot);
-	Behavior* goLeftBehavior = new GoLeft(_robot);
-	Behavior* goBackBehavior = new GoBackward(_robot);
+	//Behavior* goLeftBehavior = new GoLeft(_robot);
+	//Behavior* goBackBehavior = new GoBackward(_robot);
 
 	_behaviors.push_back(goForwardBehavior);
-	_behaviors.push_back(goRightBehavior);
-	_behaviors.push_back(goLeftBehavior);
-	_behaviors.push_back(goBackBehavior);
+	//_behaviors.push_back(goRightBehavior);
+	//_behaviors.push_back(goLeftBehavior);
+	//_behaviors.push_back(goBackBehavior);
 
 	//Connecting behaviors
 	goForwardBehavior->addNextBehavior(goRightBehavior);
-	goForwardBehavior->addNextBehavior(goLeftBehavior);
+	//goForwardBehavior->addNextBehavior(goLeftBehavior);
 
 	goRightBehavior->addNextBehavior(goForwardBehavior);
-	goRightBehavior->addNextBehavior(goBackBehavior);
-	goLeftBehavior->addNextBehavior(goForwardBehavior);
-	goLeftBehavior->addNextBehavior(goBackBehavior);
+	//goRightBehavior->addNextBehavior(goBackBehavior);
+	//goLeftBehavior->addNextBehavior(goForwardBehavior);
+	//goLeftBehavior->addNextBehavior(goBackBehavior);
 
 	_startBehavior = goForwardBehavior;
 }

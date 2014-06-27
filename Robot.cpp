@@ -7,29 +7,59 @@
 
 #include "Robot.h"
 
-Robot::Robot(char* ip, int port){
-	// TODO Auto-generated constructor stub
-	_pc = new PlayerClient(ip,port);
-	_pp = new Position2dProxy(_pc);
-	_lp = new LaserProxy(_pc);
-
-	_pp->SetMotorEnable(true);
-	int i;
-	for(i=0;i<15;i++)
-		_pc->Read();
-}
-void Robot::read()
+Robot::Robot(char* ip, int port)
 {
-	_pc->Read();
+	_playerClient = new PlayerClient(ip, port);
+	_positionProxy = new Position2dProxy(_playerClient);
+	_laserProxy = new LaserProxy(_playerClient);
+	_laser = new Laser(*_laserProxy, *this);
+
+	_positionProxy->SetMotorEnable(true);
+
+	// Workaround to clear sensors
+	for (int i = 0; i < 15; i++)
+	{
+		_playerClient->Read();
+	}
 }
+
+double Robot::getX()
+{
+	return _positionProxy->GetXPos();
+}
+
+double Robot::getY()
+{
+	return _positionProxy->GetYPos();
+}
+
+double Robot::getYaw()
+{
+	return _positionProxy->GetYaw();
+}
+
+void Robot::getObstacles(vector<Point>& obstacles)
+{
+	_laser->getObstacles(LASER_OBSTACLE_DISTANCE, obstacles);
+}
+
+bool Robot::canRotate()
+{
+	return _laser->canRotate();
+}
+
+bool Robot::canMoveForward()
+{
+	return _laser->canMoveForward();
+}
+
+void Robot::refresh()
+{
+	_playerClient->Read();
+}
+
 void Robot::setSpeed(float speed, float angularSpeed)
 {
-	_pp->SetSpeed(speed,angularSpeed);
+	_positionProxy->SetSpeed(speed, angularSpeed);
 }
-float Robot::getLaserDistance(int index)
-{
-	return _lp->GetRange(index);
-}
-Robot::~Robot() {
-	// TODO Auto-generated destructor stub
-}
+

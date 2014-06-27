@@ -13,23 +13,17 @@ GoForward::GoForward(Robot* robot):Behavior(robot) {
 }
 bool GoForward::startCondition()
 {
-	if(_robot->getLaserDistance(333) > 0.8)
-		return true;
-	return false;
+	return _robot->canMoveForward();
 }
 void GoForward::action()
 {
-	if(_robot->getLaserDistance(333) > 3.0)
-		_robot->setSpeed(1.0,0.0);
-	else
-		_robot->setSpeed(0.5,0.0);
+
 }
+
 bool GoForward::stopCondition()
 {
-	if(_robot->getLaserDistance(333) < 0.8)
-		return true;
-	return false;
+
 }
 GoForward::~GoForward() {
-	// TODO Auto-generated destructor stub
+
 }
