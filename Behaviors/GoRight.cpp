@@ -5,38 +5,38 @@
  *      Author: user
  */
 
-
 #include "GoRight.h"
 #include "../Configuration.h"
 
-GoRight::GoRight(Robot *robot):Behavior(robot)
+GoRight::GoRight(Robot *robot) :
+	Behavior(robot)
 {
 
 }
 
 bool GoRight::startCondition()
 {
-	bool startCondition = ((_robot->getLaserDistance(333) > 0.8)&& (_robot->getLaserDistance(111) > 0.8));
-	return startCondition;
+	return _robot->canRotate();
 }
 
 void GoRight::action()
 {
-	_robot->setSpeed(0.0,0.5);
+	_robot->setSpeed(0.0, 0.5);
 }
 
 bool GoRight::stopCondition()
 {
-	return !startCondition();
+	bool result = _robot->canMoveForward();
+
+	if (result)
+	{
+		_robot->setSpeed(0.0, 0.0);
+	}
+
+	return result;
 }
-
-
 
 GoRight::~GoRight()
 {
 }
-
-
-
-
 

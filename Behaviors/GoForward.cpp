@@ -17,12 +17,12 @@ bool GoForward::startCondition()
 }
 void GoForward::action()
 {
-
+	_robot->setSpeed(0.5,0.0);
 }
 
 bool GoForward::stopCondition()
 {
-
+	return !startCondition();
 }
 GoForward::~GoForward() {
 

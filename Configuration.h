@@ -1,0 +1,26 @@
+/*
+ * Point.h
+ *
+ *  Created on: May 27, 2014
+ *      Author: user
+ */
+
+#ifndef CONFIGURATION_H_
+#define CONFIGURATION_H_
+
+#define LASER_RESOLUTION 0.36
+#define LASER_MESURING_AREA 120
+#define LASER_MAXIMUM_RANGE 2
+#define LASER_ARRAY_SIZE 666
+
+
+#define LASER_OBSTACLE_DISTANCE 1.0
+
+#define LASER_MIN_ROTATION_DISTANCE 0.5
+#define LASER_MIN_FORWARD_DISTANCE 1.0
+
+
+#define LASER_MIN_FORWARD_START_INDEX 223
+#define LASER_MIN_FORWARD_END_INDEX  433
+
+#endif /* POINT_H_ */
