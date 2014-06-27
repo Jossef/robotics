@@ -11,13 +11,22 @@
 #include "Behaviors/Behavior.h"
 #include "Robot.h"
 
-class Manager {
+class Manager
+{
 	Robot* _robot;
 	Plan* _plan;
 	Behavior* _currentBehavior;
+	bool _running;
+
 public:
 	Manager(Robot* robot, Plan* plan);
 	void run();
+
+	void stop()
+	{
+		_running = false;
+	}
+
 	virtual ~Manager();
 };
 
