@@ -1,5 +1,5 @@
-Behaviors/GoBackward.d Behaviors/GoBackward.o:  \
- ../Behaviors/GoBackward.cpp ../Behaviors/GoBackward.h \
+Behaviors/GoRandomDirection.d Behaviors/GoRandomDirection.o:  \
+ ../Behaviors/GoRandomDirection.cpp ../Behaviors/GoRandomDirection.h \
   ../Behaviors/Behavior.h ../Behaviors/../Robot.h ../Behaviors/../Point.h \
   ../Behaviors/../Laser.h \
   /usr/local/include/player-2.0/libplayerc++/playerc++.h \
@@ -16,9 +16,10 @@ Behaviors/GoBackward.d Behaviors/GoBackward.o:  \
   /usr/local/include/player-2.0/libplayerc++/playererror.h \
   /usr/local/include/player-2.0/libplayerc++/clientproxy.h \
   ../Behaviors/../Configuration.h ../Behaviors/../Robot.h \
-  ../Behaviors/../MathHelper.h
+  ../Behaviors/../MathHelper.h ../Behaviors/../Map.h \
+  ../Behaviors/../Matrix.h ../Behaviors/GoLeft.h ../Behaviors/GoRight.h
 
-../Behaviors/GoBackward.h:
+../Behaviors/GoRandomDirection.h:
 
 ../Behaviors/Behavior.h:
 
@@ -59,3 +60,11 @@ Behaviors/GoBackward.d Behaviors/GoBackward.o:  \
 ../Behaviors/../Robot.h:
 
 ../Behaviors/../MathHelper.h:
+
+../Behaviors/../Map.h:
+
+../Behaviors/../Matrix.h:
+
+../Behaviors/GoLeft.h:
+
+../Behaviors/GoRight.h:

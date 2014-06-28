@@ -14,6 +14,7 @@
 #include "Configuration.h"
 #include "Robot.h"
 #include "MathHelper.h"
+#include "Map.h"
 
 #include <vector>
 
@@ -21,6 +22,7 @@ using namespace PlayerCc;
 using namespace std;
 
 class Robot;
+class Map;
 
 class Laser
 {
@@ -29,8 +31,8 @@ private:
 	LaserProxy& _laserProxy;
 	Robot& _robot;
 
-	double convertIndexToDegree(int index);
-	int convertDegreeToIndex(double degree);
+	double convertIndexToDegree(int index) const;
+	int convertDegreeToIndex(double degree) const;
 
 public:
 
@@ -39,10 +41,12 @@ public:
 	{
 	}
 
-	void getObstacles(double maximumDistance, vector<Point>& obstacles);
+	void getObstacles(double maximumDistance, vector<Point>& obstacles) const;
 
-	bool canRotate();
-	bool canMoveForward();
+	bool canRotate() const;
+	bool canMoveForward() const;
+
+	void updateMap(Map& map) const;
 
 	virtual ~Laser()
 	{

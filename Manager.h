@@ -10,6 +10,11 @@
 #include "Plans/Plan.h"
 #include "Behaviors/Behavior.h"
 #include "Robot.h"
+#include "Point.h"
+#include <vector>
+#include <set>
+
+using namespace std;
 
 class Manager
 {

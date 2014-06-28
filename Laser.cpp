@@ -7,17 +7,17 @@
 
 #include "Laser.h"
 
-double Laser::convertIndexToDegree(int index)
+double Laser::convertIndexToDegree(int index) const
 {
 	return (index * LASER_RESOLUTION) - LASER_MESURING_AREA;
 }
 
-int Laser::convertDegreeToIndex(double degree)
+int Laser::convertDegreeToIndex(double degree) const
 {
 	return (degree + LASER_MESURING_AREA) / LASER_RESOLUTION;
 }
 
-void Laser::getObstacles(double maximumDistance, vector<Point>& obstacles)
+void Laser::getObstacles(double maximumDistance, vector<Point>& obstacles) const
 {
 
 	// Clear the data structure
@@ -50,7 +50,7 @@ void Laser::getObstacles(double maximumDistance, vector<Point>& obstacles)
 	}
 }
 
-bool Laser::canRotate()
+bool Laser::canRotate() const
 {
 
 	double minRotationDistance = LASER_MIN_ROTATION_DISTANCE;
@@ -71,7 +71,7 @@ bool Laser::canRotate()
 	return canRotate;
 }
 
-bool Laser::canMoveForward()
+bool Laser::canMoveForward() const
 {
 	double minForwardDistance = LASER_MIN_FORWARD_DISTANCE;
 
@@ -89,3 +89,9 @@ bool Laser::canMoveForward()
 
 	return canMoveForward;
 }
+
+void Laser::updateMap(Map& map) const
+{
+
+}
+

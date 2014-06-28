@@ -7,7 +7,7 @@
 
 #include "Map.h"
 
-Map::Map(int rows, int columns, float resolution)
+Map::Map(int rows, int columns, double resolution)
 {
 	// TODO: input checks
 
@@ -25,7 +25,7 @@ Map::~Map()
 {
 }
 
-int Map::get(float x, float y) const
+int Map::get(double x, double y) const
 {
 	// TODO: input checks
 
@@ -36,7 +36,7 @@ int Map::get(float x, float y) const
 	return get(row,column);
 }
 
-void Map::set(float x, float y, int value)
+void Map::set(double x, double y, int value)
 {
 	// TODO: input checks
 
@@ -56,12 +56,30 @@ int Map::get(int row, int column) const
 
 void Map::set(int row, int column, int value)
 {
-	// TODO: input checks
+	int previews_value = get(row, column);
 
-	_matrix(row,column) = value;
+	switch(previews_value)
+	{
+		case (MAP_STATE_OBSTACLE):
+			// Ignore this cell update
+
+			break;
+
+		default:
+			_matrix(row,column) = value;
+			break;
+	}
 }
 
+void Map::set(const Point& point, int value)
+{
+	int pointRow = convertYToRow(point.getY());
+	int pointColumn = convertXToColumn(point.getX());
 
+	set(pointRow,pointColumn, value);
+}
+
+// Print operator
 std::ostream& operator<<(ostream &os, const Map& map)
 {
 
@@ -69,16 +87,26 @@ std::ostream& operator<<(ostream &os, const Map& map)
 	{
 		for (int j = 0; j < map._columns; j++)
 		{
-			if (j > 0)
-			{
-				// Cell separator
-				os << " | ";
-			}
 
-			os << map.get(i, j);
+			int value = map.get(i, j);
+
+			switch(value)
+			{
+				case (MAP_STATE_CLEAR):
+					os << " ";
+					break;
+
+				case (MAP_STATE_OBSTACLE):
+					os << "█";
+					break;
+
+				case (MAP_STATE_UNKNOWN):
+					os << "░";
+					break;
+			}
 		}
 
-		os << endl << endl;
+		os << endl;
 	}
 
 	return os;
@@ -99,25 +127,53 @@ std::ostream& operator<<(ostream &os, const Map& map)
  */
 
 
-int Map::convertYToRow(float y) const
+int Map::convertYToRow(double y) const
 {
-	float res = 1 / _resolution;
-	float rows = _rows;
-	//float value = ceil((columns ) / 2) + (x * res);
-	//return floor(value);
-
+	double res = 1 / _resolution;
+	double rows = _rows;
 	int value = (rows / 2) - (y * res);
 	return value;
 }
 
-int Map::convertXToColumn(float x) const
+int Map::convertXToColumn(double x) const
 {
-	float res = 1 / _resolution;
-	float columns = _columns;
-	//float value = ceil((rows ) / 2) - (y * res);
-	//return floor(value);
-
+	double res = 1 / _resolution;
+	double columns = _columns;
 	int value = (columns / 2) + (x * res);
 	return value;
 }
+
+void Map::handleObstacles(const Point& robotPoint, const vector<Point>& obstacles)
+{
+	set(robotPoint, MAP_STATE_CLEAR);
+
+	for (std::vector<Point>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
+	{
+		const Point& obstaclePoint = *it;
+		set(obstaclePoint, MAP_STATE_OBSTACLE);
+
+		// Get intermediate points (the points between the robot and the obstacle)
+		vector<Point> intermediatePoints;
+		MathHelper::GetIntermediatePoints(robotPoint, obstaclePoint, MAP_INTERMEDIATE_POINT_DISTANCE, intermediatePoints);
+
+		// Enumerate Intermediate Points,
+		// Set each intermediate Point to 'CLEAR' map state
+		for (std::vector<Point>::const_iterator it2 = intermediatePoints.begin(); it2 != intermediatePoints.end(); ++it2)
+		{
+			const Point& intermediatePoint = *it2;
+			set(intermediatePoint, MAP_STATE_CLEAR);
+		}
+	}
+}
+
+void Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)
+{
+	double robotX = robot.getX();
+	double robotY = robot.getX();
+
+	Point robotPoint(robotX, robotY);
+
+	handleObstacles(robotPoint, obstacles);
+}
+
 

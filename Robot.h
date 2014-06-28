@@ -10,6 +10,7 @@
 
 #include "Point.h"
 #include "Laser.h"
+#include "Map.h"
 #include <libplayerc++/playerc++.h>
 #include <vector>
 
@@ -17,35 +18,37 @@ using namespace std;
 using namespace PlayerCc;
 
 class Laser;
+class Map;
+
 
 class Robot {
 	PlayerClient* _playerClient;
 	Position2dProxy* _positionProxy;
 	LaserProxy* _laserProxy;
 	Laser* _laser;
+	Map* _map;
+
+	void init();
 
 public:
 	Robot(char* ip, int port);
 
-	double getX();
-	double getY();
-	double getYaw();
+	double getX() const;
+	double getY() const;
+	double getYaw() const;
+	Map& getMap() const;
 
-	void getObstacles(vector<Point>& obstacles);
+	void getObstacles(vector<Point>& obstacles) const;
 
-	bool canRotate();
-	bool canMoveForward();
+	bool canRotate() const;
+	bool canMoveForward() const;
 
 	void refresh();
-	void setSpeed(float speed, float angularSpeed);
+	void setSpeed(double speed, double angularSpeed);
 
-	virtual ~Robot()
-	{
-		delete _laser;
-		delete _positionProxy;
-		delete _laserProxy;
-		delete _playerClient;
-	}
+
+
+	virtual ~Robot();
 };
 
 #endif /* ROBOT_H_ */

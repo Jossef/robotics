@@ -13,10 +13,13 @@
 #define MAP_STATE_UNKNOWN 2
 
 #include "Matrix.h"
+#include "Robot.h"
 #include <math.h>
 #include <iostream>
 
 using namespace std;
+
+class Robot;
 
 class Map
 {
@@ -26,21 +29,26 @@ class Map
 	Matrix<int> _matrix;
 
 public:
-	Map(int rows, int columns, float resolution = 1.0);
+	Map(int rows, int columns, double resolution = 1.0);
 	virtual ~Map();
 
-	int convertYToRow(float y) const;
-	int convertXToColumn(float x) const;
+	int convertYToRow(double y) const;
+	int convertXToColumn(double x) const;
 
-	Map(unsigned int rows, unsigned int columns, float resolution);
+	Map(unsigned int rows, unsigned int columns, double resolution);
 
 	// By x, y of world
-	int get(float x, float y) const;
-	void set(float x, float y, int value);
+	int get(double x, double y) const;
+	void set(double x, double y, int value);
+	void set(const Point& point, int value);
 
 	// By row and column
 	int get(int row, int column) const;
 	void set(int row, int column, int value);
+
+	void handleObstacles(const Point& robotPoint, const vector<Point>& obstacles);
+	void handleObstacles(Robot& robot, const vector<Point>& obstacles);
+
 
 	friend std::ostream& operator<< (std::ostream& stream, const Map& matrix);
 };

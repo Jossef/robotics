@@ -12,7 +12,7 @@ class MathHelper
 {
 
 public:
-	static void GetIntermediatePoints(Point firstPoint, Point secondPoint, double measuringDistance, vector<Point >& intermediatePoints);
+	static void GetIntermediatePoints(const Point& firstPoint, const Point& secondPoint, double measuringDistance, vector<Point>& intermediatePoints);
 
 	static double ConvertDegreeToRadian(double degree);
 

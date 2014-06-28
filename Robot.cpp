@@ -13,7 +13,14 @@ Robot::Robot(char* ip, int port)
 	_positionProxy = new Position2dProxy(_playerClient);
 	_laserProxy = new LaserProxy(_playerClient);
 	_laser = new Laser(*_laserProxy, *this);
+	_map = new Map(MAP_ROWS, MAP_COLUMNS, MAP_RESOLUTION);
 
+	init();
+}
+
+void Robot::init()
+{
+	_positionProxy->SetOdometry(0,0,0);
 	_positionProxy->SetMotorEnable(true);
 
 	// Workaround to clear sensors
@@ -23,42 +30,66 @@ Robot::Robot(char* ip, int port)
 	}
 }
 
-double Robot::getX()
+Robot::~Robot()
+{
+	delete _laser;
+	delete _map;
+	delete _positionProxy;
+	delete _laserProxy;
+	delete _playerClient;
+}
+
+double Robot::getX() const
 {
 	return _positionProxy->GetXPos();
 }
 
-double Robot::getY()
+double Robot::getY() const
 {
 	return _positionProxy->GetYPos();
 }
 
-double Robot::getYaw()
+double Robot::getYaw() const
 {
 	return _positionProxy->GetYaw();
 }
 
-void Robot::getObstacles(vector<Point>& obstacles)
+Map& Robot::getMap() const
+{
+	return *_map;
+}
+
+void Robot::getObstacles(vector<Point>& obstacles) const
 {
 	_laser->getObstacles(LASER_OBSTACLE_DISTANCE, obstacles);
 }
 
-bool Robot::canRotate()
+bool Robot::canRotate() const
 {
 	return _laser->canRotate();
 }
 
-bool Robot::canMoveForward()
+bool Robot::canMoveForward() const
 {
 	return _laser->canMoveForward();
 }
 
 void Robot::refresh()
 {
+	// Refresh Sensors buffers
 	_playerClient->Read();
+
+	// Handle new Obstacles
+	vector<Point> obstacles;
+	getObstacles(obstacles);
+
+	Map& map = *_map;
+
+	map.handleObstacles(*this, obstacles);
+	cout << map << endl;
 }
 
-void Robot::setSpeed(float speed, float angularSpeed)
+void Robot::setSpeed(double speed, double angularSpeed)
 {
 	_positionProxy->SetSpeed(speed, angularSpeed);
 }

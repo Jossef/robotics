@@ -20,8 +20,28 @@ public:
 
 	}
 
-	Point(double first, double second) : pair<double,double>(first, second)
+	Point(double x, double y) : pair<double,double>(x, y)
 	{
+	}
+
+	double getX() const
+	{
+		 return first;
+	}
+
+	double getY() const
+	{
+		 return second;
+	}
+
+	void setX(double x)
+	{
+		 first = x;
+	}
+
+	void setY(double y)
+	{
+		 second = y;
 	}
 
 	virtual ~Point()

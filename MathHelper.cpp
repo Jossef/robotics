@@ -1,6 +1,6 @@
 #include "MathHelper.h"
 
-void MathHelper::GetIntermediatePoints(Point firstPoint, Point secondPoint, double measuringDistance, vector<Point >& intermediatePoints)
+void MathHelper::GetIntermediatePoints(const Point& firstPoint, const Point& secondPoint, double measuringDistance, vector<Point >& intermediatePoints)
 {
 	double deltaY = max(secondPoint.second, firstPoint.second) - min(firstPoint.second, secondPoint.second);
 	double deltaX = max(secondPoint.first, firstPoint.first) - min(firstPoint.first, secondPoint.first);

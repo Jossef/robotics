@@ -45,6 +45,7 @@ void Manager::run()
 			}
 		}
 		_currentBehavior->action();
+
 	}
 
 }
