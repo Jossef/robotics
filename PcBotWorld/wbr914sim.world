@@ -33,9 +33,9 @@ window(
 )
 
 map( 
-  bitmap "yoda.png" 
+  bitmap "map.png" 
   map_resolution 0.02
-  size [10 10] 
+  size [5 5] 
   name "hospital"
 )
 
