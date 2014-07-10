@@ -1,7 +1,6 @@
-Behaviors/GoRandomDirection.d Behaviors/GoRandomDirection.o:  \
- ../Behaviors/GoRandomDirection.cpp ../Behaviors/GoRandomDirection.h \
-  ../Behaviors/Behavior.h ../Behaviors/../Robot.h ../Behaviors/../Point.h \
-  ../Behaviors/../Laser.h \
+Manager.d Manager.o: ../Manager.cpp ../Manager.h ../Plans/Plan.h \
+  ../Plans/../Behaviors/Behavior.h ../Plans/../Behaviors/../Robot.h \
+  ../Plans/../Behaviors/../Point.h ../Plans/../Behaviors/../Laser.h \
   /usr/local/include/player-2.0/libplayerc++/playerc++.h \
   /usr/local/include/player-2.0/libplayerc/playerc.h \
   /usr/local/include/player-2.0/libplayercore/player.h \
@@ -15,19 +14,23 @@ Behaviors/GoRandomDirection.d Behaviors/GoRandomDirection.o:  \
   /usr/local/include/player-2.0/libplayerc++/playerclient.h \
   /usr/local/include/player-2.0/libplayerc++/playererror.h \
   /usr/local/include/player-2.0/libplayerc++/clientproxy.h \
-  ../Behaviors/../Configuration.h ../Behaviors/../Robot.h \
-  ../Behaviors/../MathHelper.h ../Behaviors/../Map.h \
-  ../Behaviors/../Matrix.h ../Behaviors/GoLeft.h ../Behaviors/GoRight.h
+  ../Plans/../Behaviors/../Configuration.h \
+  ../Plans/../Behaviors/../Robot.h ../Plans/../Behaviors/../MathHelper.h \
+  ../Plans/../Behaviors/../Map.h ../Plans/../Behaviors/../Matrix.h \
+  ../Behaviors/Behavior.h ../Robot.h ../Point.h ../Slam/SlamManager.h \
+  ../Slam/../Laser.h ../Slam/Particle.h
 
-../Behaviors/GoRandomDirection.h:
+../Manager.h:
 
-../Behaviors/Behavior.h:
+../Plans/Plan.h:
 
-../Behaviors/../Robot.h:
+../Plans/../Behaviors/Behavior.h:
 
-../Behaviors/../Point.h:
+../Plans/../Behaviors/../Robot.h:
 
-../Behaviors/../Laser.h:
+../Plans/../Behaviors/../Point.h:
+
+../Plans/../Behaviors/../Laser.h:
 
 /usr/local/include/player-2.0/libplayerc++/playerc++.h:
 
@@ -55,16 +58,24 @@ Behaviors/GoRandomDirection.d Behaviors/GoRandomDirection.o:  \
 
 /usr/local/include/player-2.0/libplayerc++/clientproxy.h:
 
-../Behaviors/../Configuration.h:
+../Plans/../Behaviors/../Configuration.h:
 
-../Behaviors/../Robot.h:
+../Plans/../Behaviors/../Robot.h:
 
-../Behaviors/../MathHelper.h:
+../Plans/../Behaviors/../MathHelper.h:
 
-../Behaviors/../Map.h:
+../Plans/../Behaviors/../Map.h:
 
-../Behaviors/../Matrix.h:
+../Plans/../Behaviors/../Matrix.h:
 
-../Behaviors/GoLeft.h:
+../Behaviors/Behavior.h:
 
-../Behaviors/GoRight.h:
+../Robot.h:
+
+../Point.h:
+
+../Slam/SlamManager.h:
+
+../Slam/../Laser.h:
+
+../Slam/Particle.h:

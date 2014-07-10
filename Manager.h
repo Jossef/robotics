@@ -11,6 +11,7 @@
 #include "Behaviors/Behavior.h"
 #include "Robot.h"
 #include "Point.h"
+#include "Slam/SlamManager.h"
 #include <vector>
 #include <set>
 
@@ -22,6 +23,7 @@ class Manager
 	Plan* _plan;
 	Behavior* _currentBehavior;
 	bool _running;
+	SlamManager _slamManager;
 
 public:
 	Manager(Robot* robot, Plan* plan);

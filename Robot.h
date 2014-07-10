@@ -37,6 +37,7 @@ public:
 	double getY() const;
 	double getYaw() const;
 	Map& getMap() const;
+	Laser& getLaser() const;
 
 	void getObstacles(vector<Point>& obstacles) const;
 

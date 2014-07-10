@@ -18,7 +18,7 @@ public:
 	virtual ~Particle();
 
 	void move(double xDelta, double yDelta, double yawDelta);
-	void update(Laser& lsr);
+	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
 	Particle GetNewParticle();
 	Map& getMap() {return m_map;}
 	double GetBelife() {return m_belife;}

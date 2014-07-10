@@ -31,9 +31,21 @@ void Manager::run()
 		}
 	}
 
+	double previewsX = 0;
+	double previewsY = 0;
+	double previewsYaw = 0;
+
 	while (_running)
 	{
 		_robot->refresh();
+
+		// ------------
+		// Calculate deltas
+
+		double deltaX = _robot->getX() - previewsX;
+		double deltaY = _robot->getY() - previewsY;
+		double deltaYaw = _robot->getYaw() - previewsYaw;
+
 		if (_currentBehavior->stopCondition())
 		{
 			_currentBehavior = _currentBehavior->getNextBehavior();
@@ -44,8 +56,18 @@ void Manager::run()
 				return;
 			}
 		}
+
 		_currentBehavior->action();
 
+		Laser& laser = _robot->getLaser();
+		_slamManager.update(deltaX, deltaY, deltaYaw, laser);
+
+		// ------------
+		// Save this iteration x, y ,yaw
+
+		previewsX = _robot->getX();
+		previewsY = _robot->getY();
+		previewsYaw = _robot->getYaw();
 	}
 
 }

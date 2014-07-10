@@ -9,12 +9,15 @@
 #include <stdlib.h>
 #include <time.h>
 
-Particle::Particle() :m_map(0,0){
+Particle::Particle() :
+	m_map(0, 0)
+{
 	// TODO Auto-generated constructor stub
 
 }
 
-Particle::~Particle() {
+Particle::~Particle()
+{
 	// TODO Auto-generated destructor stub
 }
 
@@ -25,10 +28,10 @@ void Particle::move(double xDelta, double yDelta, double yawDelta)
 	m_Yaw += yawDelta;
 }
 
-void Particle::update(Laser& lsr)
+void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
 	vector<Point> obstacles;
-	lsr.getObstacles(m_Xpos, m_Ypos, m_Yaw, obstacles);
+	laser.getObstacles(m_Xpos, m_Ypos, m_Yaw, obstacles);
 	// TODO check obstacle with my current map
 	// if failed lower score if ok increase. update map if needed with obstacles
 
@@ -42,10 +45,10 @@ Particle Particle::GetNewParticle()
 {
 	Particle newPar;
 	//initialize random seed
-	srand (time(NULL));
-	newPar.m_Xpos =  m_Xpos + rand() % PARTICLE_ERROR_RANGE;
-	newPar.m_Ypos =  m_Ypos + rand() % PARTICLE_ERROR_RANGE;
-	newPar.m_Yaw =  m_Yaw + rand() % PARTICLE_ERROR_RANGE;
+	srand(time(NULL));
+	newPar.m_Xpos = m_Xpos + rand() % PARTICLE_ERROR_RANGE;
+	newPar.m_Ypos = m_Ypos + rand() % PARTICLE_ERROR_RANGE;
+	newPar.m_Yaw = m_Yaw + rand() % PARTICLE_ERROR_RANGE;
 
 	newPar.m_map = m_map;
 

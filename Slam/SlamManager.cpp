@@ -7,11 +7,26 @@
 
 #include "SlamManager.h"
 
-SlamManager::SlamManager() {
-	// TODO Auto-generated constructor stub
+SlamManager::SlamManager()
+{
 
 }
 
-SlamManager::~SlamManager() {
-	// TODO Auto-generated destructor stub
+void SlamManager::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
+{
+
+	for (vector<Particle>::iterator iter = _particles.begin(); iter != _particles.end(); iter++)
+	{
+		Particle& particle = *iter;
+		particle.update(deltaX, deltaY, deltaYaw, laser);
+
+
+		// TODO threshold and shit https://drive.google.com/#folders/0B9RF6zZ3qfHXakF5MDZvcTZieVU
+
+	}
+
+}
+
+SlamManager::~SlamManager()
+{
 }

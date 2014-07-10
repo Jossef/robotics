@@ -59,6 +59,11 @@ Map& Robot::getMap() const
 	return *_map;
 }
 
+Laser& Robot::getLaser() const
+{
+	return *_laser;
+}
+
 void Robot::getObstacles(vector<Point>& obstacles) const
 {
 	_laser->getObstacles(LASER_OBSTACLE_DISTANCE, obstacles);
