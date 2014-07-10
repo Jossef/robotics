@@ -42,6 +42,7 @@ public:
 	}
 
 	void getObstacles(double maximumDistance, vector<Point>& obstacles) const;
+	void getObstacles(double xLoc, double yLoc, double yaw, vector<Point>& obstacles) const;
 
 	bool canRotate() const;
 	bool canMoveForward() const;

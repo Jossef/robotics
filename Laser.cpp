@@ -16,38 +16,37 @@ int Laser::convertDegreeToIndex(double degree) const
 {
 	return (degree + LASER_MESURING_AREA) / LASER_RESOLUTION;
 }
+void Laser::getObstacles(double xLoc, double yLoc, double yaw, vector<Point>& obstacles) const
+{
+	// Clear the data structure
+		obstacles.clear();
 
+		for (unsigned int index = 0; index < _laserProxy.GetCount(); index++)
+			{
+				double distance = _laserProxy[index];
+
+				if (distance >= LASER_MAXIMUM_RANGE)
+				{
+					continue;
+				}
+
+				double indexDegree = convertIndexToDegree(index);
+				double indexRadian = MathHelper::ConvertDegreeToRadian(indexDegree);
+
+				double obstacleRadian = indexRadian + yaw;
+
+				double obstacleX = distance * cos(obstacleRadian) + xLoc;
+				double obstacleY = distance * sin(obstacleRadian) + yLoc;
+
+				Point point(obstacleX, obstacleY);
+
+				obstacles.push_back(point);
+			}
+
+}
 void Laser::getObstacles(double maximumDistance, vector<Point>& obstacles) const
 {
-
-	// Clear the data structure
-	obstacles.clear();
-
-	double robotX = _robot.getX();
-	double robotY = _robot.getY();
-	double robotYaw = _robot.getYaw();
-
-	for (unsigned int index = 0; index < _laserProxy.GetCount(); index++)
-	{
-		double distance = _laserProxy[index];
-
-		if (distance >= LASER_MAXIMUM_RANGE)
-		{
-			continue;
-		}
-
-		double indexDegree = convertIndexToDegree(index);
-		double indexRadian = MathHelper::ConvertDegreeToRadian(indexDegree);
-
-		double obstacleRadian = indexRadian + robotYaw;
-
-		double obstacleX = distance * cos(obstacleRadian) + robotX;
-		double obstacleY = distance * sin(obstacleRadian) + robotY;
-
-		Point point(obstacleX, obstacleY);
-
-		obstacles.push_back(point);
-	}
+	getObstacles(_robot.getX(), _robot.getY(),_robot.getYaw(), obstacles);
 }
 
 bool Laser::canRotate() const

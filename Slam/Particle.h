@@ -8,15 +8,17 @@
 #ifndef PARTICLE_H_
 #define PARTICLE_H_
 
-#include "../Map.h"
-#include "../Point.h"
+#define PARTICLE_ERROR_RANGE 5
+
+#include "../Laser.h"
 #include <vector>
 class Particle {
 public:
 	Particle();
 	virtual ~Particle();
 
-	void Update(double xDelta, double yDelta, double yawDelta, vector<Point>& obstacles);
+	void move(double xDelta, double yDelta, double yawDelta);
+	void update(Laser& lsr);
 	Particle GetNewParticle();
 	Map& getMap() {return m_map;}
 	double GetBelife() {return m_belife;}
