@@ -22,14 +22,13 @@
 
 using namespace std;
 
-
 int main23(int argc, char** argv)
 {
 	vector<Point> intermediatePoints;
-	MathHelper::GetIntermediatePoints(Point(-5,20), Point(1,5), 0.5, intermediatePoints);
+	MathHelper::GetIntermediatePoints(Point(-5, 20), Point(1, 5), 0.5, intermediatePoints);
 
-	vector<Point >::const_iterator iter = intermediatePoints.begin();
-	for(;iter!=intermediatePoints.end();iter++)
+	vector<Point>::const_iterator iter = intermediatePoints.begin();
+	for (; iter != intermediatePoints.end(); iter++)
 	{
 		cout << (*iter).first << " , " << (*iter).second << endl;
 	}
@@ -51,23 +50,28 @@ using namespace PlayerCc;
 #define LASER_MESURING_AREA 120
 #define LASER_MAXIMUM_RANGE 2
 
-double indexToDegree(int index) {
+double indexToDegree(int index)
+{
 	return (index * LASER_RESOLUTION) - LASER_MESURING_AREA;
 }
 
-int degreeToIndex(double degree) {
+int degreeToIndex(double degree)
+{
 	return (degree + LASER_MESURING_AREA) / LASER_RESOLUTION;
 }
 
-double degreeToRadian(double degree) {
+double degreeToRadian(double degree)
+{
 	return degree * M_PI / 180.0;
 }
 
-double radianToDegree(double radian) {
+double radianToDegree(double radian)
+{
 	return radian * 180.0 / M_PI;
 }
 
-int main3(int argc, char** argv) {
+int main3(int argc, char** argv)
+{
 	PlayerClient pc("localhost", 6665);
 	Position2dProxy pp(&pc, 0);
 	SonarProxy sp(&pc, 0);
@@ -77,24 +81,29 @@ int main3(int argc, char** argv) {
 	pp.SetMotorEnable(true);
 
 	Map worldMap(18, 40, 1);
-	pp.SetOdometry(0,0,0);
+	pp.SetOdometry(0, 0, 0);
 
-	for (int i = 0; i < 8; i++) {
+	for (int i = 0; i < 8; i++)
+	{
 		pc.Read();
 	}
 
 	//pp.GoTo(0,0,0);
 
-	while (true) {
-		try {
+	while (true)
+	{
+		try
+		{
 			pc.Read();
 
 			set<string> obstacles;
 
-			for (int i = 0; i < 666; i++) {
+			for (int i = 0; i < 666; i++)
+			{
 
 				double distance = lp[i];
-				if (distance >= LASER_MAXIMUM_RANGE) {
+				if (distance >= LASER_MAXIMUM_RANGE)
+				{
 					continue;
 				}
 
@@ -128,17 +137,19 @@ int main3(int argc, char** argv) {
 			}
 
 			std::set<string>::iterator it;
-			for (it = obstacles.begin(); it != obstacles.end(); ++it) {
+			for (it = obstacles.begin(); it != obstacles.end(); ++it)
+			{
 				string f = *it; // Note the "*" here
 				cout << f << endl;
 			}
 
-			cout << " -------------------------- " << endl << endl << endl
-					<< endl << endl << endl;
+			cout << " -------------------------- " << endl << endl << endl << endl << endl << endl;
 
 			// Print map
 			//cout << map << endl;
-		} catch (exception& ex) {
+		}
+		catch (exception& ex)
+		{
 			cout << ex.what();
 		}
 		//cout << pp.GetXPos() << ' ' << pp.GetYPos() << pp.GetYaw() << endl;

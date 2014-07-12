@@ -37,17 +37,13 @@ Map::Map(int rows, int columns, double resolution)
 
 int Map::convertYToRow(double y) const
 {
-	double res = 1 / _resolution;
-	double rows = _rows;
-	int value = (rows / 2) - (y * res);
+	int value = (_rows / 2) - (y / _resolution);
 	return value;
 }
 
 int Map::convertXToColumn(double x) const
 {
-	double res = 1 / _resolution;
-	double columns = _columns;
-	int value = (columns / 2) + (x * res);
+	int value = (_columns / 2) + (x / _resolution);
 	return value;
 }
 
@@ -108,6 +104,12 @@ void Map::set(const Point& point, int value)
 bool Map::isMismatch(int row, int column, int value)
 {
 	int previews_value = get(row, column);
+
+	// For unknown values we do not care what is the new value
+	if (previews_value == MAP_STATE_UNKNOWN)
+	{
+		return false;
+	}
 
 	// If they are not equals then this is a mismatch
 	bool mismatch = !(previews_value == value);

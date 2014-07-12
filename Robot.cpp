@@ -41,17 +41,41 @@ Robot::~Robot()
 
 double Robot::getX() const
 {
-	return _positionProxy->GetXPos();
+	double x = _positionProxy->GetXPos();
+
+	if (DEMO_MODE)
+	{
+		srand(time(0));
+		x += (rand() % DEMO_RANDOM)/DEMO_RANDOM_RATIO;
+	}
+
+	return x;
 }
 
 double Robot::getY() const
 {
-	return _positionProxy->GetYPos();
+	double y = _positionProxy->GetYPos();
+
+	if (DEMO_MODE)
+	{
+		srand(time(0));
+		y += (rand() % DEMO_RANDOM)/DEMO_RANDOM_RATIO;
+	}
+
+	return y;
 }
 
 double Robot::getYaw() const
 {
-	return _positionProxy->GetYaw();
+	double yaw = _positionProxy->GetYaw();
+
+	if (DEMO_MODE)
+	{
+		srand(time(0));
+		yaw += (rand() % DEMO_RANDOM)/DEMO_RANDOM_RATIO;
+	}
+
+	return yaw;
 }
 
 Map& Robot::getMap() const

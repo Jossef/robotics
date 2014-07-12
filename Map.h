@@ -8,9 +8,9 @@
 #ifndef MAP_H_
 #define MAP_H_
 
-#define MAP_STATE_CLEAR 0
+#define MAP_STATE_UNKNOWN 0
 #define MAP_STATE_OBSTACLE 1
-#define MAP_STATE_UNKNOWN 2
+#define MAP_STATE_CLEAR 2
 
 #include "Matrix.h"
 #include "Robot.h"

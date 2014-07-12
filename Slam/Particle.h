@@ -11,6 +11,12 @@
 #include "../Configuration.h"
 #include "../Laser.h"
 #include <vector>
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>
+
+using namespace std;
+
 class Particle
 {
 private:

@@ -1,18 +1,9 @@
-/*
- * Particle.cpp
- *
- *  Created on: Jul 9, 2014
- *      Author: user
- */
-
 #include "Particle.h"
-#include <stdlib.h>
-#include <time.h>
 
 Particle::Particle() :
 	_map()
 {
-
+	_belief = 0.9;
 }
 
 void Particle::move(double deltaX, double deltaY, double deltaYaw)
@@ -24,22 +15,43 @@ void Particle::move(double deltaX, double deltaY, double deltaYaw)
 
 void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
+	// ---------------
+	// Update Particle x, y, yaw
 
 	move(deltaX, deltaY, deltaYaw);
 
-	vector<Point> obstacles;
-	laser.getObstacles(_x, _y, _yaw, obstacles);
+	// TODO preBelief = probmov
+	double previewsBelief = _belief * 1;
 
-	// Check obstacle with my current map
-	// if failed lower score if ok increase. update map if needed with obstacles
+	// ---------------
+	// Update Map
 
-	int mismatcCount = _map.update(_x, _y, _yaw, laser);
+	int mismatchCount = _map.update(_x, _y, _yaw, laser);
 
-	// TODO convert mismatch count into probability
+	// ---------------
+	// Update Belief
 
-	// score should represent the number of particles i create from this particle
-	// next generation gets a copy of my current map
+	// Converting mismatch count into probability
+	// by 1/mismatch
+	// if high mismatches - we will get a lower belief
+	// otherwise, we will get stable belief
 
+	// If there are no mismatches, lets verify that we don't divide by 0
+	mismatchCount = std::max(mismatchCount, 1);
+
+	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * (1 / mismatchCount);
+
+	// Create Children Particles
+	for (int i = 0; i < PARTICLE_CHILEDS_COUNT; i++)
+	{
+
+	}
+
+	// Should kill
+	if (_belief <= PARTICLE_KILL_BELIEF)
+	{
+		// Kill the particle
+	}
 }
 
 Particle Particle::create()
@@ -52,6 +64,8 @@ Particle Particle::create()
 	newPar._y = _y + rand() % PARTICLE_ERROR_RANGE;
 	newPar._yaw = _yaw + rand() % PARTICLE_ERROR_RANGE;
 
+	// Next generation gets a copy of my current map
+	// This is done by copy constructor
 	newPar._map = _map;
 
 	return newPar;
