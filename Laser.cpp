@@ -16,37 +16,40 @@ int Laser::convertDegreeToIndex(double degree) const
 {
 	return (degree + LASER_MESURING_AREA) / LASER_RESOLUTION;
 }
-void Laser::getObstacles(double xLoc, double yLoc, double yaw, vector<Point>& obstacles) const
+
+void Laser::getObstacles(double x, double y, double yaw, vector<Point>& obstacles) const
 {
 	// Clear the data structure
-		obstacles.clear();
+	obstacles.clear();
 
-		for (unsigned int index = 0; index < _laserProxy.GetCount(); index++)
-			{
-				double distance = _laserProxy[index];
+	for (unsigned int index = 0; index < _laserProxy.GetCount(); index++)
+	{
+		double distance = _laserProxy[index];
 
-				if (distance >= LASER_MAXIMUM_RANGE)
-				{
-					continue;
-				}
+		// If the laser cannot seet an obstacle
+		if (distance >= LASER_MAXIMUM_RANGE)
+		{
+			// let's move to the next sample
+			continue;
+		}
 
-				double indexDegree = convertIndexToDegree(index);
-				double indexRadian = MathHelper::ConvertDegreeToRadian(indexDegree);
+		double indexDegree = convertIndexToDegree(index);
+		double indexRadian = MathHelper::ConvertDegreeToRadian(indexDegree);
 
-				double obstacleRadian = indexRadian + yaw;
+		double obstacleRadian = indexRadian + yaw;
 
-				double obstacleX = distance * cos(obstacleRadian) + xLoc;
-				double obstacleY = distance * sin(obstacleRadian) + yLoc;
+		double obstacleX = distance * cos(obstacleRadian) + x;
+		double obstacleY = distance * sin(obstacleRadian) + y;
 
-				Point point(obstacleX, obstacleY);
+		Point point(obstacleX, obstacleY);
 
-				obstacles.push_back(point);
-			}
-
+		obstacles.push_back(point);
+	}
 }
-void Laser::getObstacles(double maximumDistance, vector<Point>& obstacles) const
+
+void Laser::getObstacles(vector<Point>& obstacles) const
 {
-	getObstacles(_robot.getX(), _robot.getY(),_robot.getYaw(), obstacles);
+	getObstacles(_robot.getX(), _robot.getY(), _robot.getYaw(), obstacles);
 }
 
 bool Laser::canRotate() const

@@ -10,47 +10,49 @@
 #include <time.h>
 
 Particle::Particle() :
-	m_map(0, 0)
+	_map()
 {
-	// TODO Auto-generated constructor stub
 
 }
 
-Particle::~Particle()
+void Particle::move(double deltaX, double deltaY, double deltaYaw)
 {
-	// TODO Auto-generated destructor stub
-}
-
-void Particle::move(double xDelta, double yDelta, double yawDelta)
-{
-	m_Xpos += xDelta;
-	m_Ypos += yDelta;
-	m_Yaw += yawDelta;
+	_x += deltaX;
+	_y += deltaY;
+	_yaw += deltaYaw;
 }
 
 void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
+
+	move(deltaX, deltaY, deltaYaw);
+
 	vector<Point> obstacles;
-	laser.getObstacles(m_Xpos, m_Ypos, m_Yaw, obstacles);
-	// TODO check obstacle with my current map
+	laser.getObstacles(_x, _y, _yaw, obstacles);
+
+	// Check obstacle with my current map
 	// if failed lower score if ok increase. update map if needed with obstacles
 
+	int mismatcCount = _map.update(_x, _y, _yaw, laser);
+
+	// TODO convert mismatch count into probability
 
 	// score should represent the number of particles i create from this particle
 	// next generation gets a copy of my current map
 
-
 }
-Particle Particle::GetNewParticle()
+
+Particle Particle::create()
 {
 	Particle newPar;
 	//initialize random seed
 	srand(time(NULL));
-	newPar.m_Xpos = m_Xpos + rand() % PARTICLE_ERROR_RANGE;
-	newPar.m_Ypos = m_Ypos + rand() % PARTICLE_ERROR_RANGE;
-	newPar.m_Yaw = m_Yaw + rand() % PARTICLE_ERROR_RANGE;
 
-	newPar.m_map = m_map;
+	newPar._x = _x + rand() % PARTICLE_ERROR_RANGE;
+	newPar._y = _y + rand() % PARTICLE_ERROR_RANGE;
+	newPar._yaw = _yaw + rand() % PARTICLE_ERROR_RANGE;
+
+	newPar._map = _map;
 
 	return newPar;
 }

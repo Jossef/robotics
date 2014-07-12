@@ -8,29 +8,38 @@
 #ifndef PARTICLE_H_
 #define PARTICLE_H_
 
-#define PARTICLE_ERROR_RANGE 5
-
+#include "../Configuration.h"
 #include "../Laser.h"
 #include <vector>
-class Particle {
+class Particle
+{
+private:
+
+	double _x;
+	double _y;
+	double _yaw;
+	Map _map;
+	double _belief;
+
+	void move(double deltaX, double deltaY, double deltaYaw);
+
 public:
 	Particle();
-	virtual ~Particle();
 
-	void move(double xDelta, double yDelta, double yawDelta);
+	Particle create();
+
 	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
-	Particle GetNewParticle();
-	Map& getMap() {return m_map;}
-	double GetBelife() {return m_belife;}
 
-private:
-	void UpdateBelife();
-	void UpdateMap();
-	double m_Xpos;
-	double m_Ypos;
-	double m_Yaw;
-	Map m_map;
-	double m_belife;
+	Map& getMap()
+	{
+		return _map;
+	}
+
+	double GetBelife()
+	{
+		return _belief;
+	}
+
 };
 
 #endif /* PARTICLE_H_ */

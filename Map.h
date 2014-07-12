@@ -14,12 +14,15 @@
 
 #include "Matrix.h"
 #include "Robot.h"
+#include "Point.h"
+#include "Laser.h"
 #include <math.h>
 #include <iostream>
 
 using namespace std;
 
 class Robot;
+class Laser;
 
 class Map
 {
@@ -29,8 +32,7 @@ class Map
 	Matrix<int> _matrix;
 
 public:
-	Map(int rows, int columns, double resolution = 1.0);
-	virtual ~Map();
+	Map(int rows = MAP_ROWS, int columns = MAP_COLUMNS, double resolution = MAP_RESOLUTION);
 
 	int convertYToRow(double y) const;
 	int convertXToColumn(double x) const;
@@ -46,9 +48,16 @@ public:
 	int get(int row, int column) const;
 	void set(int row, int column, int value);
 
-	void handleObstacles(const Point& robotPoint, const vector<Point>& obstacles);
-	void handleObstacles(Robot& robot, const vector<Point>& obstacles);
+	// Tells if there is a mismatch between the new value and the existing value
+	bool isMismatch(const Point& point, int value);
+	bool isMismatch(int row, int column, int value);
 
+	// Returns mismatch count
+	int handleObstacles(const Point& initalPoint, const vector<Point>& obstacles);
+	int handleObstacles(Robot& robot, const vector<Point>& obstacles);
+
+	// Returns mismatch count
+	int update(double x, double y, double yaw, const Laser& laser);
 
 	friend std::ostream& operator<< (std::ostream& stream, const Map& matrix);
 };
