@@ -4,6 +4,22 @@ Particle::Particle() :
 	_map()
 {
 	_belief = 0.9;
+	_x = 0;
+	_y = 0;
+	_yaw = 0;
+}
+
+double Particle::probabilityMove(double deltaX, double deltaY, double deltaYaw)
+{
+	double distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
+	double absoluteYaw = abs(deltaYaw);
+
+	if (absoluteYaw < PARTICLE_PROB_MOV_YAW && distance < PARTICLE_PROB_MOV_DISTANCE)
+	{
+		return 0.9;
+	}
+
+	return 0.1;
 }
 
 void Particle::move(double deltaX, double deltaY, double deltaYaw)
@@ -20,8 +36,8 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser
 
 	move(deltaX, deltaY, deltaYaw);
 
-	// TODO preBelief = probmov
-	double previewsBelief = _belief * 1;
+	double probability = probabilityMove(deltaX, deltaY, deltaYaw);
+	double previewsBelief = _belief * probability;
 
 	// ---------------
 	// Update Map
@@ -40,18 +56,6 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser
 	mismatchCount = std::max(mismatchCount, 1);
 
 	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * (1 / mismatchCount);
-
-	// Create Children Particles
-	for (int i = 0; i < PARTICLE_CHILEDS_COUNT; i++)
-	{
-
-	}
-
-	// Should kill
-	if (_belief <= PARTICLE_KILL_BELIEF)
-	{
-		// Kill the particle
-	}
 }
 
 Particle Particle::create()
@@ -70,3 +74,9 @@ Particle Particle::create()
 
 	return newPar;
 }
+
+double Particle::getBelief() const
+{
+	return _belief;
+}
+

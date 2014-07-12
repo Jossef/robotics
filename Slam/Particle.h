@@ -28,23 +28,15 @@ private:
 	double _belief;
 
 	void move(double deltaX, double deltaY, double deltaYaw);
+	double probabilityMove(double deltaX, double deltaY, double deltaYaw);
+
 
 public:
 	Particle();
 
 	Particle create();
-
 	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
-
-	Map& getMap()
-	{
-		return _map;
-	}
-
-	double GetBelife()
-	{
-		return _belief;
-	}
+	double getBelief() const;
 
 };
 

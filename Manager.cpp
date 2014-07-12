@@ -68,6 +68,12 @@ void Manager::run()
 		previewsX = _robot->getX();
 		previewsY = _robot->getY();
 		previewsYaw = _robot->getYaw();
+
+		// -----------
+		// Print the map
+
+		Map& map = _robot->getMap();
+		//cout << map << endl;
 	}
 
 }

@@ -113,9 +113,7 @@ void Robot::refresh()
 	getObstacles(obstacles);
 
 	Map& map = *_map;
-
 	map.handleObstacles(*this, obstacles);
-	cout << map << endl;
 }
 
 void Robot::setSpeed(double speed, double angularSpeed)
