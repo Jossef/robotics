@@ -17,6 +17,8 @@ public:
 	static double ConvertDegreeToRadian(double degree);
 
 	static double ConvertRadianToDegree(double radian);
+	
+	static pair<double,double> GetIndexFromRadius(double dDistanceRadius, double dRobotWidth);
 };
 
 #endif // MathHelper_H_
