@@ -38,6 +38,7 @@ Map::Map(int rows, int columns, double resolution)
 int Map::convertYToRow(double y) const
 {
 	int value = (_rows / 2) - (y / _resolution);
+
 	return value;
 }
 
@@ -162,6 +163,7 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 {
 	int mismatchCount = 0;
 
+	vector<Point> freePointsToFlush;
 	set(initalPoint, MAP_STATE_CLEAR);
 
 	for (std::vector<Point>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
@@ -172,8 +174,6 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 		{
 			mismatchCount++;
 		}
-
-		set(obstaclePoint, MAP_STATE_OBSTACLE);
 
 		// Get intermediate points (the points between the robot and the obstacle)
 		vector<Point> intermediatePoints;
@@ -190,10 +190,19 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 				mismatchCount++;
 			}
 
-			set(intermediatePoint, MAP_STATE_CLEAR);
+			freePointsToFlush.push_back(intermediatePoint);
 		}
 	}
 
+	for (std::vector<Point>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
+	{
+		set(*it, MAP_STATE_OBSTACLE);
+	}
+
+	for (std::vector<Point>::const_iterator it = freePointsToFlush.begin(); it != freePointsToFlush.end(); ++it)
+	{
+		set(*it, MAP_STATE_CLEAR);
+	}
 	return mismatchCount;
 }
 

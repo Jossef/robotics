@@ -19,7 +19,7 @@ double Particle::probabilityMove(double deltaX, double deltaY, double deltaYaw)
 		return 0.9;
 	}
 
-	return 0.1;
+	return 0.6;
 }
 
 void Particle::move(double deltaX, double deltaY, double deltaYaw)
@@ -42,7 +42,16 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser
 	// ---------------
 	// Update Map
 
-	int mismatchCount = _map.update(_x, _y, _yaw, laser);
+	int mismatchCount=0;
+	try
+	{
+		mismatchCount = _map.update(_x, _y, _yaw, laser);
+	}
+	catch (...)
+	{
+		mismatchCount=999999;
+	}
+
 
 	// ---------------
 	// Update Belief
@@ -54,8 +63,10 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser
 
 	// If there are no mismatches, lets verify that we don't divide by 0
 	mismatchCount = std::max(mismatchCount, 1);
+	double missFactor = (1 / (double)mismatchCount);
 
-	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * (1 / mismatchCount);
+	//cout << (PARTICLE_MAGIC_NUMBER * previewsBelief * missFactor) << "= "<< PARTICLE_MAGIC_NUMBER << "*" << _belief << "*" << probability << "*" << missFactor << '(' << mismatchCount << ')' << '\n';
+	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * missFactor;
 }
 
 Particle Particle::create()
@@ -74,7 +85,22 @@ Particle Particle::create()
 
 	return newPar;
 }
+Map& Particle::getMap()
+{
+	return _map;
+}
+bool Particle::operator ==(const Particle& ref)
+{
+	if (_x == ref._x &&
+		_y == ref._y &&
+		_yaw == ref._yaw &&
+		_belief == ref._belief)
+	{
+		return true;
+	}
 
+	return false;
+}
 double Particle::getBelief() const
 {
 	return _belief;

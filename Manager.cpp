@@ -35,6 +35,7 @@ void Manager::run()
 	double previewsY = 0;
 	double previewsYaw = 0;
 
+	int runNum=0;
 	while (_running)
 	{
 		_robot->refresh();
@@ -71,9 +72,12 @@ void Manager::run()
 
 		// -----------
 		// Print the map
-
-		Map& map = _robot->getMap();
-		//cout << map << endl;
+		if (runNum % 3 == 0)
+		{
+			Map& map = _slamManager.GetMap();
+			cout << map << endl;
+			runNum++;
+		}
 	}
 
 }

@@ -26,18 +26,19 @@ private:
 	double _yaw;
 	Map _map;
 	double _belief;
-
-	void move(double deltaX, double deltaY, double deltaYaw);
 	double probabilityMove(double deltaX, double deltaY, double deltaYaw);
 
 
 public:
 	Particle();
 
+	void move(double deltaX, double deltaY, double deltaYaw);
 	Particle create();
 	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
 	double getBelief() const;
+	Map& getMap();
 
+	bool operator ==(const Particle& ref);
 };
 
 #endif /* PARTICLE_H_ */
