@@ -175,6 +175,13 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 	unsigned int mismatchCount = 0;
 	unsigned int currectCounter = 0;
 
+	//////////////////////////////////////////////////
+	// TODO: DELETE THIS LINE - ONLY FOR TESTING
+	int num_of_obstacles = obstacles.size();
+	//////////////////////////////////////////////////
+
+	int mismatchCount = 0;
+
 	vector<Point> freePointsToFlush;
 	set(initalPoint, MAP_STATE_CLEAR);
 
@@ -195,6 +202,11 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 		// Get intermediate points (the points between the robot and the obstacle)
 		vector<Point> intermediatePoints;
 		MathHelper::GetIntermediatePoints(initalPoint, obstaclePoint, MAP_INTERMEDIATE_POINT_DISTANCE, intermediatePoints);
+
+		////////////////////////////////////////////////
+		// TODO: DELETE THIS LINE - ONLY FOR TESTING
+		int num_of_intermediatePoints = intermediatePoints.size();
+		///////////////////////////////////////////////
 
 		// Enumerate Intermediate Points,
 		// Set each intermediate Point to 'CLEAR' map state
@@ -233,11 +245,11 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 double Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)
 {
 	double robotX = robot.getX();
-	double robotY = robot.getX();
+	double robotY = robot.getY();
 
 	Point initalPoint(robotX, robotY);
 
-	int matchPercent = handleObstacles(initalPoint, obstacles);
+	double matchPercent = handleObstacles(initalPoint, obstacles);
 
 	return matchPercent;
 }
