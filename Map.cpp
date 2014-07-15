@@ -161,6 +161,12 @@ std::ostream& operator<<(ostream &os, const Map& map)
 
 int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacles)
 {
+	//////////////////////////////////////////////////
+	// TODO: DELETE THIS LINE - ONLY FOR TESTING
+	int num_of_obstacles = obstacles.size();
+	//////////////////////////////////////////////////
+
+
 	int mismatchCount = 0;
 
 	vector<Point> freePointsToFlush;
@@ -178,6 +184,12 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 		// Get intermediate points (the points between the robot and the obstacle)
 		vector<Point> intermediatePoints;
 		MathHelper::GetIntermediatePoints(initalPoint, obstaclePoint, MAP_INTERMEDIATE_POINT_DISTANCE, intermediatePoints);
+
+		////////////////////////////////////////////////
+		// TODO: DELETE THIS LINE - ONLY FOR TESTING
+		int num_of_intermediatePoints = intermediatePoints.size();
+		///////////////////////////////////////////////
+
 
 		// Enumerate Intermediate Points,
 		// Set each intermediate Point to 'CLEAR' map state
@@ -209,7 +221,7 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 int Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)
 {
 	double robotX = robot.getX();
-	double robotY = robot.getX();
+	double robotY = robot.getY();
 
 	Point initalPoint(robotX, robotY);
 
