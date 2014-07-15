@@ -34,7 +34,7 @@ public:
 
 	void move(double deltaX, double deltaY, double deltaYaw);
 	Particle create();
-	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
+	double update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
 	double getBelief() const;
 	Map& getMap();
 

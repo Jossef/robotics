@@ -14,12 +14,21 @@ double Particle::probabilityMove(double deltaX, double deltaY, double deltaYaw)
 	double distance = sqrt(pow(deltaX, 2) + pow(deltaY, 2));
 	double absoluteYaw = abs(deltaYaw);
 
-	if (absoluteYaw < PARTICLE_PROB_MOV_YAW && distance < PARTICLE_PROB_MOV_DISTANCE)
+	if ((absoluteYaw == 0) && (distance < PARTICLE_PROB_MOV_DISTANCE))
 	{
-		return 0.9;
+		return 1;
+	}
+	else if ((distance < PARTICLE_PROB_MOV_DISTANCE) && (absoluteYaw < PARTICLE_PROB_MOV_YAW))
+	{
+		return 0.8;
+	}
+	else if (((distance > PARTICLE_PROB_MOV_DISTANCE) && (absoluteYaw < PARTICLE_PROB_MOV_YAW)) ||
+			 ((distance < PARTICLE_PROB_MOV_DISTANCE) && (absoluteYaw > PARTICLE_PROB_MOV_YAW)))
+	{
+		return 0.6;
 	}
 
-	return 0.6;
+	return 0.2;
 }
 
 void Particle::move(double deltaX, double deltaY, double deltaYaw)
@@ -29,11 +38,10 @@ void Particle::move(double deltaX, double deltaY, double deltaYaw)
 	_yaw += deltaYaw;
 }
 
-void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
+double Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
 	// ---------------
 	// Update Particle x, y, yaw
-
 	move(deltaX, deltaY, deltaYaw);
 
 	double probability = probabilityMove(deltaX, deltaY, deltaYaw);
@@ -42,31 +50,24 @@ void Particle::update(double deltaX, double deltaY, double deltaYaw, const Laser
 	// ---------------
 	// Update Map
 
-	int mismatchCount=0;
+	double matchPercent;
 	try
 	{
-		mismatchCount = _map.update(_x, _y, _yaw, laser);
+		matchPercent = _map.update(_x, _y, _yaw, laser);
 	}
 	catch (...)
 	{
-		mismatchCount=999999;
+		matchPercent=0;
 	}
-
 
 	// ---------------
 	// Update Belief
+	//cout << (PARTICLE_MAGIC_NUMBER * previewsBelief * matchPercent) << "= "<< PARTICLE_MAGIC_NUMBER << "*" << _belief << "*" << probability << "*" << matchPercent << '\n';
+	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * matchPercent;
 
-	// Converting mismatch count into probability
-	// by 1/mismatch
-	// if high mismatches - we will get a lower belief
-	// otherwise, we will get stable belief
+	if (_belief > 1) _belief=1;
 
-	// If there are no mismatches, lets verify that we don't divide by 0
-	mismatchCount = std::max(mismatchCount, 1);
-	double missFactor = (1 / (double)mismatchCount);
-
-	//cout << (PARTICLE_MAGIC_NUMBER * previewsBelief * missFactor) << "= "<< PARTICLE_MAGIC_NUMBER << "*" << _belief << "*" << probability << "*" << missFactor << '(' << mismatchCount << ')' << '\n';
-	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * missFactor;
+	return _belief;
 }
 
 Particle Particle::create()
@@ -101,8 +102,8 @@ bool Particle::operator ==(const Particle& ref)
 
 	return false;
 }
+
 double Particle::getBelief() const
 {
 	return _belief;
 }
-

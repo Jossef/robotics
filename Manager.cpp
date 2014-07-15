@@ -61,8 +61,7 @@ void Manager::run()
 		_currentBehavior->action();
 
 		Laser& laser = _robot->getLaser();
-		_slamManager.update(deltaX, deltaY, deltaYaw, laser);
-
+		Map& map = _slamManager.update(deltaX, deltaY, deltaYaw, laser);
 		// ------------
 		// Save this iteration x, y ,yaw
 
@@ -74,7 +73,6 @@ void Manager::run()
 		// Print the map
 		if (runNum % 3 == 0)
 		{
-			Map& map = _slamManager.GetMap();
 			cout << map << endl;
 			runNum++;
 		}

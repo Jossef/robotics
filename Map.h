@@ -32,6 +32,7 @@ class Map
 	Matrix<int> _matrix;
 
 public:
+	Map & operator =(const Map& m);
 	Map(int rows = MAP_ROWS, int columns = MAP_COLUMNS, double resolution = MAP_RESOLUTION);
 
 	int convertYToRow(double y) const;
@@ -49,15 +50,15 @@ public:
 	void set(int row, int column, int value);
 
 	// Tells if there is a mismatch between the new value and the existing value
-	bool isMismatch(const Point& point, int value);
-	bool isMismatch(int row, int column, int value);
+	bool isMismatch(const Point& point, int value, bool & isUnknown);
+	bool isMismatch(int row, int column, int value, bool & isUnknown);
 
-	// Returns mismatch count
-	int handleObstacles(const Point& initalPoint, const vector<Point>& obstacles);
-	int handleObstacles(Robot& robot, const vector<Point>& obstacles);
+	// Returns match percentage
+	double handleObstacles(const Point& initalPoint, const vector<Point>& obstacles);
+	double handleObstacles(Robot& robot, const vector<Point>& obstacles);
 
-	// Returns mismatch count
-	int update(double x, double y, double yaw, const Laser& laser);
+	// Returns match percentage
+	double update(double x, double y, double yaw, const Laser& laser);
 
 	friend std::ostream& operator<< (std::ostream& stream, const Map& matrix);
 };

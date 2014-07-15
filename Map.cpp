@@ -102,29 +102,31 @@ void Map::set(const Point& point, int value)
 	set(pointRow, pointColumn, value);
 }
 
-bool Map::isMismatch(int row, int column, int value)
+bool Map::isMismatch(int row, int column, int value, bool & isUnknown)
 {
 	int previews_value = get(row, column);
 
 	// For unknown values we do not care what is the new value
 	if (previews_value == MAP_STATE_UNKNOWN)
 	{
+		isUnknown = true;
 		return false;
 	}
 
+	isUnknown = false;
 	// If they are not equals then this is a mismatch
-	bool mismatch = !(previews_value == value);
+	bool mismatch = previews_value != value;
 
 	return mismatch;
 }
 
-bool Map::isMismatch(const Point& point, int value)
+bool Map::isMismatch(const Point& point, int value, bool & isUnknown)
 {
 	// Convert x and y to row and column
 	int pointRow = convertYToRow(point.getY());
 	int pointColumn = convertXToColumn(point.getX());
 
-	return isMismatch(pointRow, pointColumn, value);
+	return isMismatch(pointRow, pointColumn, value, isUnknown);
 }
 
 // Print operator
@@ -159,20 +161,35 @@ std::ostream& operator<<(ostream &os, const Map& map)
 	return os;
 }
 
-int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacles)
+Map& Map::operator =(const Map& m)
 {
-	int mismatchCount = 0;
+	_columns = m._columns;
+	_resolution = m._resolution;
+	_rows = m._rows;
+	_matrix = m._matrix;
+
+	return *this;
+}
+double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacles)
+{
+	unsigned int mismatchCount = 0;
+	unsigned int currectCounter = 0;
 
 	vector<Point> freePointsToFlush;
 	set(initalPoint, MAP_STATE_CLEAR);
 
 	for (std::vector<Point>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
 	{
+		bool isNewPoint;
 		const Point& obstaclePoint = *it;
 
-		if (isMismatch(obstaclePoint, MAP_STATE_OBSTACLE))
+		if (isMismatch(obstaclePoint, MAP_STATE_OBSTACLE, isNewPoint))
 		{
 			mismatchCount++;
+		}
+		else if (!isNewPoint)
+		{
+			currectCounter++;
 		}
 
 		// Get intermediate points (the points between the robot and the obstacle)
@@ -185,11 +202,14 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 		{
 			const Point& intermediatePoint = *it2;
 
-			if (isMismatch(intermediatePoint, MAP_STATE_CLEAR))
+			if (isMismatch(intermediatePoint, MAP_STATE_CLEAR, isNewPoint))
 			{
 				mismatchCount++;
 			}
-
+			else if (!isNewPoint)
+			{
+				currectCounter++;
+			}
 			freePointsToFlush.push_back(intermediatePoint);
 		}
 	}
@@ -203,29 +223,33 @@ int Map::handleObstacles(const Point& initalPoint, const vector<Point>& obstacle
 	{
 		set(*it, MAP_STATE_CLEAR);
 	}
-	return mismatchCount;
+
+	if (mismatchCount == 0)
+		return 1;
+
+	return currectCounter/(currectCounter+mismatchCount);
 }
 
-int Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)
+double Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)
 {
 	double robotX = robot.getX();
 	double robotY = robot.getX();
 
 	Point initalPoint(robotX, robotY);
 
-	int mismatchCount = handleObstacles(initalPoint, obstacles);
+	int matchPercent = handleObstacles(initalPoint, obstacles);
 
-	return mismatchCount;
+	return matchPercent;
 }
 
-int Map::update(double x, double y, double yaw, const Laser& laser)
+double Map::update(double x, double y, double yaw, const Laser& laser)
 {
 	// Handle new Obstacles
 	vector<Point> obstacles;
 	laser.getObstacles(x, y, yaw, obstacles);
 
 	Point initalPoint(x, y);
-	int mismatchCount = handleObstacles(initalPoint, obstacles);
+	double matchPercent = handleObstacles(initalPoint, obstacles);
 
-	return mismatchCount;
+	return matchPercent;
 }

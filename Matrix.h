@@ -28,6 +28,14 @@ public:
 	{
 	}
 
+	Matrix<T>& operator=(const Matrix<T> & m)
+	{
+		_dimx = m._dimx;
+		_dimy = m._dimy;
+		_vector = m._vector;
+
+		return *this;
+	}
 	void init(unsigned int dimx, unsigned int dimy, const T initValue)
 	{
 		_dimx = dimx;

@@ -6,17 +6,6 @@
  */
 
 #include "SlamManager.h"
-Map& SlamManager::GetMap()
-{
-	Particle& bestBelife = *_particles.begin();
-	for (list<Particle>::iterator iter = _particles.begin(); iter != _particles.end(); iter++)
-	{
-		if ( iter->getBelief()> bestBelife.getBelief())
-			bestBelife = *iter;
-	}
-
-	return bestBelife.getMap();
-}
 
 SlamManager::SlamManager()
 {
@@ -35,7 +24,7 @@ SlamManager::SlamManager()
 	}
 }
 
-void SlamManager::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
+Map& SlamManager::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
 	list<Particle> particlesToAdd;
 	list<Particle> toRemove;
@@ -45,26 +34,26 @@ void SlamManager::update(double deltaX, double deltaY, double deltaYaw, const La
 	for (list<Particle>::iterator iter = _particles.begin(); iter != _particles.end(); iter++)
 	{
 		Particle& particle = *iter;
-		particle.update(deltaX, deltaY, deltaYaw, laser);
 
-		double belief = particle.getBelief();
+		double belief = particle.update(deltaX, deltaY, deltaYaw, laser);
 
 		// If the particle should be killed
-		if (belief <= PARTICLE_KILL_THRESHOLD)
+		if (belief <= PARTICLE_KILL_THRESHOLD && _particles.size() != 0)
 		{
 			// save the particle for removal
 			toRemove.push_back(*iter);
 		}
 		// If we can produce more particles
 		// If particle should duplicate
-		else if (belief >= PARTICLE_BIRTH_THRESHOLD && (_particles.size() + particlesToAdd.size()) <= PARTICLE_COUNT)
+		else if (belief >= PARTICLE_BIRTH_THRESHOLD &&
+				(_particles.size() + particlesToAdd.size()) <= PARTICLE_COUNT)
 		{
 			Particle newParticle = particle.create();
 			_particles.push_back(particle);
 		}
 
 		// get best particle for creation of more
-		if (iter->getBelief() > bestParticle.getBelief())
+		if (belief > bestParticle.getBelief())
 		{
 			bestParticle = *iter;
 		}
@@ -76,18 +65,14 @@ void SlamManager::update(double deltaX, double deltaY, double deltaYaw, const La
 		_particles.remove(*iter);
 	}
 
-	if (_particles.size() == 0)
-	{
-		int bp=9;
-		bp++;
-	}
-
 	// Creating from the best part
 	for (size_t parCount = _particles.size(); parCount <= PARTICLE_COUNT; parCount++)
 	{
 		Particle newParticle = bestParticle.create();
 		_particles.push_back(newParticle);
 	}
+
+	return bestParticle.getMap();
 }
 
 SlamManager::~SlamManager()

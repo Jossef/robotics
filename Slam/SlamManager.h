@@ -23,11 +23,9 @@ private:
 public:
 	SlamManager();
 
-	void update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
+	Map& update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
 
 	virtual ~SlamManager();
-
-	Map& GetMap();
 };
 
 #endif /* SLAMMANAGER_H_ */
