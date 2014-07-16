@@ -36,19 +36,19 @@ int main23(int argc, char** argv)
 
 int main(int argc, char** argv)
 {
-	//try
-	//{
+	try
+	{
 
 		Robot robot("localhost", 6665);
 		PlnObstacleAvoid pln(&robot);
 		Manager m(&robot, &pln);
 		m.run();
 
-	//}
-	//catch (exception& ex)
-	//{
-	//	cout << ex.what();
-	//}
+	}
+	catch (exception& ex)
+	{
+		cout << ex.what();
+	}
 }
 
 using namespace std;

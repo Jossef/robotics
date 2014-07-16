@@ -33,7 +33,7 @@ public:
 	Particle();
 
 	void move(double deltaX, double deltaY, double deltaYaw);
-	Particle* create();
+	Particle create();
 	double update(double deltaX, double deltaY, double deltaYaw, const Laser& laser);
 	double getBelief() const;
 	Map& getMap();

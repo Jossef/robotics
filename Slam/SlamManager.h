@@ -18,7 +18,7 @@ class SlamManager
 {
 private:
 
-	list<Particle*> _particles;
+	list<Particle> _particles;
 
 public:
 	SlamManager();

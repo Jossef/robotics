@@ -180,8 +180,6 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 	int num_of_obstacles = obstacles.size();
 	//////////////////////////////////////////////////
 
-	int mismatchCount = 0;
-
 	vector<Point> freePointsToFlush;
 	set(initalPoint, MAP_STATE_CLEAR);
 
@@ -239,7 +237,7 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 	if (mismatchCount == 0)
 		return 1;
 
-	return currectCounter/(currectCounter+mismatchCount);
+	return (double)currectCounter/(double)(currectCounter+mismatchCount);
 }
 
 double Map::handleObstacles(Robot& robot, const vector<Point>& obstacles)

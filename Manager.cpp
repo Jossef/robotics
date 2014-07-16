@@ -74,8 +74,8 @@ void Manager::run()
 		if (runNum % 3 == 0)
 		{
 			cout << map << endl;
-			runNum++;
 		}
+		runNum++;
 	}
 
 }

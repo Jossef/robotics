@@ -62,7 +62,7 @@ double Particle::update(double deltaX, double deltaY, double deltaYaw, const Las
 
 	// ---------------
 	// Update Belief
-	cout << (PARTICLE_MAGIC_NUMBER * previewsBelief * matchPercent) << "= "<< PARTICLE_MAGIC_NUMBER << "*" << _belief << "*" << probability << "*" << matchPercent << '\n';
+	//cout << (PARTICLE_MAGIC_NUMBER * previewsBelief * matchPercent) << "= "<< PARTICLE_MAGIC_NUMBER << "*" << _belief << "*" << probability << "*" << matchPercent << '\n';
 	_belief = PARTICLE_MAGIC_NUMBER * previewsBelief * matchPercent;
 
 	if (_belief > 1) _belief=1;
@@ -70,17 +70,17 @@ double Particle::update(double deltaX, double deltaY, double deltaYaw, const Las
 	return _belief;
 }
 
-Particle* Particle::create()
+Particle Particle::create()
 {
-	Particle *newPar = new Particle();
+	Particle newPar;
 	//initialize random seed
 	srand(time(NULL));
 
-	newPar->_x = _x + (rand() % PARTICLE_ERROR_RANGE);
-	newPar->_y = _y + (rand() % PARTICLE_ERROR_RANGE);
-	newPar->_yaw = _yaw + (rand() % PARTICLE_ERROR_RANGE);
+	newPar._x = _x + (rand() % PARTICLE_ERROR_RANGE);
+	newPar._y = _y + (rand() % PARTICLE_ERROR_RANGE);
+	newPar._yaw = _yaw + (rand() % PARTICLE_ERROR_RANGE);
 
-	newPar->_map = _map;
+	newPar._map = _map;
 
 	return newPar;
 }

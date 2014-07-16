@@ -18,24 +18,23 @@ SlamManager::SlamManager()
 		double particleY = (rand() % PARTICLE_SPREAD_MODULO) / PARTICLE_SPREAD_MODULO;
 		double particleYaw = (rand() % PARTICLE_SPREAD_MODULO) / PARTICLE_SPREAD_MODULO;
 
-		Particle *newParticle = new Particle();
-		newParticle->move(particleX,particleY,particleYaw);
+		Particle newParticle;
+		newParticle.move(particleX,particleY,particleYaw);
 		_particles.push_back(newParticle);
 	}
 }
 
 Map& SlamManager::update(double deltaX, double deltaY, double deltaYaw, const Laser& laser)
 {
-	list<Particle*> particlesToAdd;
-	list<Particle*> toRemove;
-	Particle* bestParticle = *_particles.begin();
+	list<Particle> toRemove;
+	list<Particle>::iterator bestParticle = _particles.begin();
 
 	// Loop the existing particles
-	for (list<Particle*>::iterator iter = _particles.begin(); iter != _particles.end(); iter++)
+	for (list<Particle>::iterator iter = _particles.begin(); iter != _particles.end(); iter++)
 	{
-		Particle* particle = *iter;
+		Particle& particle = *iter;
 
-		double belief = particle->update(deltaX, deltaY, deltaYaw, laser);
+		double belief = particle.update(deltaX, deltaY, deltaYaw, laser);
 
 		// If the particle should be killed
 		if (belief <= PARTICLE_KILL_THRESHOLD && _particles.size() != 0 || belief == 0)
@@ -46,24 +45,23 @@ Map& SlamManager::update(double deltaX, double deltaY, double deltaYaw, const La
 		// If we can produce more particles
 		// If particle should duplicate
 		else if (belief >= PARTICLE_BIRTH_THRESHOLD &&
-				(_particles.size() + particlesToAdd.size()) <= PARTICLE_COUNT)
+				_particles.size() <= PARTICLE_COUNT)
 		{
-			Particle * newParticle = particle->create();
+			Particle newParticle = particle.create();
 			_particles.push_back(particle);
 		}
 
 		// get best particle for creation of more
 		if (belief > bestParticle->getBelief())
 		{
-			bestParticle = *iter;
+			bestParticle = iter;
 		}
 	}
 
 	// deleting the particles
-	for (list<Particle*>::iterator iter = toRemove.begin(); iter != toRemove.end(); iter++)
+	for (list<Particle>::iterator iter = toRemove.begin(); iter != toRemove.end(); iter++)
 	{
 		_particles.remove(*iter);
-		delete *iter;
 	}
 
 	if (_particles.size() == 0)
@@ -74,9 +72,9 @@ Map& SlamManager::update(double deltaX, double deltaY, double deltaYaw, const La
 
 	// Creating from the best part
 	for (size_t parCount = _particles.size(); parCount <= PARTICLE_COUNT &&
-	bestParticle != *_particles.end(); parCount++)
+	bestParticle != _particles.end(); parCount++)
 	{
-		Particle *newParticle = bestParticle->create();
+		Particle newParticle = bestParticle->create();
 		_particles.push_back(newParticle);
 	}
 
