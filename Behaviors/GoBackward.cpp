@@ -7,23 +7,36 @@
 
 #include "GoBackward.h"
 
-GoBackward::GoBackward(Robot* robot):Behavior(robot) {
-	// TODO Auto-generated constructor stub
-
+GoBackward::GoBackward(Robot* robot):Behavior(robot), _steps_count(0)
+{
 }
+
 bool GoBackward::startCondition()
 {
-
-	return false;
+	return true;
 }
+
 void GoBackward::action()
 {
-
+	++_steps_count;
+	_robot->setSpeed(-0.1,0.0);
 }
+
 bool GoBackward::stopCondition()
 {
-	return false;
+	if (_steps_count < 10)
+	{
+		return false;
+	}
+	else
+	{
+		_steps_count = 0;
+		_robot->setSpeed(0.0, 0.0);
+		return true;
+	}
+
 }
-GoBackward::~GoBackward() {
-	// TODO Auto-generated destructor stub
+
+GoBackward::~GoBackward()
+{
 }
