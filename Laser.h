@@ -29,19 +29,17 @@ class Laser
 
 private:
 	LaserProxy& _laserProxy;
-	Robot& _robot;
 
 	double convertIndexToDegree(int index) const;
 	int convertDegreeToIndex(double degree) const;
 
 public:
 
-	Laser(LaserProxy& laserProxy, Robot& robot) :
-		_laserProxy(laserProxy), _robot(robot)
+	Laser(LaserProxy& laserProxy) : _laserProxy(laserProxy)
 	{
 	}
 
-	void getObstacles(vector<Point>& obstacles) const;
+	
 	void getObstacles(double x, double y, double yaw, vector<Point>& obstacles) const;
 
 	bool canRotate() const;
