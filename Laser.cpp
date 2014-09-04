@@ -47,10 +47,7 @@ void Laser::getObstacles(double x, double y, double yaw, vector<Point>& obstacle
 	}
 }
 
-void Laser::getObstacles(vector<Point>& obstacles) const
-{
-	getObstacles(_robot.getX(), _robot.getY(), _robot.getYaw(), obstacles);
-}
+
 
 bool Laser::canRotate() const
 {
