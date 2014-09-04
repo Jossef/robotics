@@ -14,7 +14,7 @@ GoLeft::GoLeft(Robot *robot):Behavior(robot)
 
 bool GoLeft::startCondition()
 {
-	return _robot->canRotate();
+	return (_robot->canRotate());
 }
 
 void GoLeft::action()
@@ -24,7 +24,14 @@ void GoLeft::action()
 
 bool GoLeft::stopCondition()
 {
-	return !startCondition();
+	bool result = _robot->canMoveForward() || !_robot->canRotate();
+
+	if (result)
+	{
+		_robot->setSpeed(0.0, 0.0);
+	}
+
+	return result;
 }
 
 GoLeft::~GoLeft()
