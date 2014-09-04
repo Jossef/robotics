@@ -9,7 +9,6 @@
 
 Behavior::Behavior(Robot* robot)
 {
-	// TODO Auto-generated constructor stub
 	_robot = robot;
 }
 
@@ -34,9 +33,4 @@ Behavior* Behavior::getNextBehavior()
 
 Behavior::~Behavior()
 {
-	for (vector<Behavior*>::const_iterator iter = _nextBehaviors.begin(); iter != _nextBehaviors.end(); iter++)
-	{
-		Behavior* currentBehavior = *iter;
-		delete currentBehavior;
-	}
 }
