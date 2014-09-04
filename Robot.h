@@ -47,7 +47,8 @@ public:
 	void refresh();
 	void setSpeed(double speed, double angularSpeed);
 
-
+	double get_right_rank() const;
+	double get_left_rank() const;
 
 	virtual ~Robot();
 };
