@@ -27,6 +27,7 @@ void Manager::run()
 		// If there are no more behaviors
 		if (!_currentBehavior)
 		{
+			std::cout << "The robot fail to start! there isn't any legal step! Please take the robot to other position" << std::endl;
 			return;
 		}
 	}
@@ -54,27 +55,33 @@ void Manager::run()
 			// If there are no more behaviors
 			if (!_currentBehavior)
 			{
+				std::cout << "Can't move! there isn't any legal step!" << std::endl;
 				return;
 			}
 		}
+
+		// ------------
+		// Save this iteration x, y ,yaw
+		previewsX = _robot->getX();
+		previewsY = _robot->getY();
+		previewsYaw = _robot->getYaw();
 
 		_currentBehavior->action();
 
 		Laser& laser = _robot->getLaser();
 		Map& map = _slamManager.update(deltaX, deltaY, deltaYaw, laser);
-		// ------------
-		// Save this iteration x, y ,yaw
 
-		previewsX = _robot->getX();
-		previewsY = _robot->getY();
-		previewsYaw = _robot->getYaw();
+
+
 
 		// -----------
 		// Print the map
 		if (runNum % 3 == 0)
 		{
 			cout << map << endl;
+
 		}
+
 		runNum++;
 	}
 
