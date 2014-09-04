@@ -7,11 +7,18 @@
 
 #include "Plan.h"
 
-Plan::Plan(Robot* robot) {
-	// TODO Auto-generated constructor stub
+Plan::Plan(Robot* robot)
+{
+
 	_robot = robot;
 }
 
-Plan::~Plan() {
-	// TODO Auto-generated destructor stub
+Plan::~Plan()
+{
+	const int size = _behaviors.size();
+
+	for (int index = 0; index < size; ++index)
+	{
+		delete _behaviors[index];
+	}
 }
