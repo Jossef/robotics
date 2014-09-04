@@ -10,13 +10,20 @@
 
 #include "Behavior.h"
 #include "../Robot.h"
-class GoBackward: public Behavior {
+class GoBackward: public Behavior
+{
+
 public:
 	GoBackward(Robot* robot);
+
 	bool startCondition();
 	bool stopCondition();
 	void action();
 	virtual ~GoBackward();
+
+private:
+	int _steps_count;
+
 };
 
 #endif /* GOBACKWARD_H_ */
