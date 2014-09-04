@@ -12,7 +12,7 @@ Robot::Robot(char* ip, int port)
 	_playerClient = new PlayerClient(ip, port);
 	_positionProxy = new Position2dProxy(_playerClient);
 	_laserProxy = new LaserProxy(_playerClient);
-	_laser = new Laser(*_laserProxy, *this);
+	_laser = new Laser(*_laserProxy);
 	_map = new Map();
 
 	init();
@@ -90,7 +90,7 @@ Laser& Robot::getLaser() const
 
 void Robot::getObstacles(vector<Point>& obstacles) const
 {
-	_laser->getObstacles(obstacles);
+	_laser->getObstacles(getX(), getY(), getYaw(), obstacles);
 }
 
 bool Robot::canRotate() const
