@@ -26,7 +26,7 @@ void GoRight::action()
 
 bool GoRight::stopCondition()
 {
-	bool result = _robot->canMoveForward();
+	bool result = _robot->canMoveForward() || !_robot->canRotate();
 
 	if (result)
 	{
