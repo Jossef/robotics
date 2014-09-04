@@ -48,6 +48,9 @@ public:
 	bool canMoveForward() const;
 
 	void updateMap(Map& map) const;
+	
+	double GetRightRank() const;
+	double GetLeftRank() const;
 
 	virtual ~Laser()
 	{
