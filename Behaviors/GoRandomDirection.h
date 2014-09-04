@@ -5,24 +5,30 @@
  *      Author: user
  */
 
-#ifndef GOBACKWARD_H_
-#define GOBACKWARD_H_
+#ifndef GORANDOM_H_
+#define GORANDOM_H_
+
 
 #include "Behavior.h"
 #include "GoLeft.h"
 #include "GoRight.h"
 #include "../Robot.h"
+
 class GoRandomDirection: public Behavior
 {
-	GoLeft _goLeft;
-	GoRight _goRight;
 
 public:
-	GoRandomDirection(Robot* robot);
+	GoRandomDirection(Robot* robot, GoLeft*	goLeft, GoRight* goRight);
 	bool startCondition();
 	bool stopCondition();
 	void action();
 	virtual ~GoRandomDirection();
+
+private:
+	GoLeft*		_goLeft;
+	GoRight* 	_goRight;
+	bool		_keep_moving;
+	Behavior*	_cur_behavior;
 };
 
 #endif /* GOBACKWARD_H_ */
