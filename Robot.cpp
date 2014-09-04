@@ -121,3 +121,13 @@ void Robot::setSpeed(double speed, double angularSpeed)
 	_positionProxy->SetSpeed(speed, angularSpeed);
 }
 
+double Robot::get_right_rank() const
+{
+	return _laser->GetRightRank();
+}
+
+double Robot::get_left_rank() const
+{
+	return _laser->GetLeftRank();
+}
+
