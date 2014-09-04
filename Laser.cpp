@@ -92,8 +92,29 @@ bool Laser::canMoveForward() const
 	return canMoveForward;
 }
 
-void Laser::updateMap(Map& map) const
+double Laser::GetRightRank() const
 {
+	double ret = 0;
+
+	for (unsigned int index = LASER_MIN_FORWARD_END_INDEX; index < LASER_ARRAY_SIZE; index += 10)
+	{
+		ret += _laserProxy[index];
+	}
+
+	return ret;
+}
+
+double Laser::GetLeftRank() const
+{
+	double ret = 0;
+
+	for (unsigned int index = 0; index < LASER_MIN_FORWARD_START_INDEX; index += 10)
+	{
+		ret += _laserProxy[index];
+	}
+
+	return ret;
 
 }
+
 
