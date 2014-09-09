@@ -11,6 +11,7 @@
 #define MAP_STATE_UNKNOWN 0
 #define MAP_STATE_OBSTACLE 1
 #define MAP_STATE_CLEAR 2
+#define MAP_STATE_ROBOT 3
 
 #include "Matrix.h"
 #include "Robot.h"
@@ -30,6 +31,7 @@ class Map
 	int _rows;
 	int _columns;
 	Matrix<int> _matrix;
+	Point _prev;
 
 public:
 	Map & operator =(const Map& m);
