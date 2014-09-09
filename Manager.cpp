@@ -76,7 +76,7 @@ void Manager::run()
 
 		// -----------
 		// Print the map
-		if (runNum % 3 == 0)
+		if (runNum % 10 == 0)
 		{
 			cout << map << endl;
 
