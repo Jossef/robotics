@@ -7,11 +7,8 @@
 
 #include "Map.h"
 
-Map::Map(int rows, int columns, double resolution)
+Map::Map(int rows, int columns, double resolution) : _resolution(resolution), _prev()
 {
-	// TODO: input checks
-
-	_resolution = resolution;
 
 	float fixed_resolution = 1 / resolution;
 
@@ -152,6 +149,9 @@ std::ostream& operator<<(ostream &os, const Map& map)
 			case (MAP_STATE_UNKNOWN):
 				os << "░";
 				break;
+			case (MAP_STATE_ROBOT):
+				os << "*";
+				break;
 			}
 		}
 
@@ -175,13 +175,12 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 	unsigned int mismatchCount = 0;
 	unsigned int currectCounter = 0;
 
-	//////////////////////////////////////////////////
-	// TODO: DELETE THIS LINE - ONLY FOR TESTING
-	int num_of_obstacles = obstacles.size();
-	//////////////////////////////////////////////////
 
 	vector<Point> freePointsToFlush;
 	set(initalPoint, MAP_STATE_CLEAR);
+
+	set(_prev, MAP_STATE_CLEAR);
+	_prev = initalPoint;
 
 	for (std::vector<Point>::const_iterator it = obstacles.begin(); it != obstacles.end(); ++it)
 	{
@@ -200,11 +199,6 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 		// Get intermediate points (the points between the robot and the obstacle)
 		vector<Point> intermediatePoints;
 		MathHelper::GetIntermediatePoints(initalPoint, obstaclePoint, MAP_INTERMEDIATE_POINT_DISTANCE, intermediatePoints);
-
-		////////////////////////////////////////////////
-		// TODO: DELETE THIS LINE - ONLY FOR TESTING
-		int num_of_intermediatePoints = intermediatePoints.size();
-		///////////////////////////////////////////////
 
 		// Enumerate Intermediate Points,
 		// Set each intermediate Point to 'CLEAR' map state
@@ -236,6 +230,8 @@ double Map::handleObstacles(const Point& initalPoint, const vector<Point>& obsta
 
 	if (mismatchCount == 0)
 		return 1;
+
+	set(_prev, MAP_STATE_ROBOT);
 
 	return (double)currectCounter/(double)(currectCounter+mismatchCount);
 }
